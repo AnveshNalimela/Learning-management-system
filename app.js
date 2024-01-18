@@ -41,6 +41,20 @@ app.get("/educator", async (request, response) => {
     })
 })
 
+app.get("/courseindexe", async (request, response) => {
+    response.render('courseindexe.ejs', {
+        title: "LMS Application",
+
+    })
+})
+
+app.get("/courseindexs", async (request, response) => {
+    response.render('courseindexs.ejs', {
+        title: "LMS Application",
+
+    })
+})
+
 
 
 
