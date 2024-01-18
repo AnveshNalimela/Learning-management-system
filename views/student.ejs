@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Homepage</title>
+    <!-- Include Tailwind CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-blue-100">
+    <%- include('header.ejs') %>
+
+        <!-- Student Homepage Container -->
+        <div class="container mx-auto p-8">
+
+            <!-- Student Icon and Details -->
+            <div class="flex justify-end items-center mb-4">
+                <img src="https://th.bing.com/th/id/R.7a2ea004dd85a4c84e7b74e89dab66a5?rik=lNGK6jH%2fWn3pcA&riu=http%3a%2f%2fcdn.onlinewebfonts.com%2fsvg%2fimg_460528.png&ehk=UGxHDuUeTES8Q4t4udZwaIg037OqUyNcYaAizrI%2bKnM%3d&risl=&pid=ImgRaw&r=0"
+                    alt="Student Icon" class="w-8 h-8 mr-2">
+                <div>
+                    <p class="font-semibold text-gray-800">John Doe</p>
+                    <p class="text-gray-600">Student ID: ABC123</p>
+                </div>
+            </div>
+
+            <!-- Welcome Message -->
+            <h1 class="text-3xl font-semibold mb-6">Welcome, John Doe!</h1>
+
+            <%- include('courses.ejs') %>
+
+
+            <%- include('footer.ejs') %>
+</body>
+
+</html>

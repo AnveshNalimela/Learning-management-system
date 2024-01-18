@@ -1,0 +1,21 @@
+{
+  "name": "wd201-lms",
+  "version": "1.0.0",
+  "description": "\"Learning Mangement System\"",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon -e js,ejs",
+    "test": "",
+    "prepare": " husky install "
+  },
+  "author": "Anvesh Nalimela <nalimelaanvesh@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "husky": "^8.0.3",
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.3"
+  },
+  "dependencies": {
+    "ejs": "^3.1.9"
+  }
+}
