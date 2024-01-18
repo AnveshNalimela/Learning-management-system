@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Viewer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+
+<body class="bg-blue-100">
+
+    <div class="container mx-auto p-8 flex">
+        <!-- Left Side: List of Chapters -->
+        <div class="w-1/3 pr-8">
+            <h2 class="text-2xl font-semibold mb-4">Course Chapters</h2>
+
+            <!-- Chapter List with Completion Status -->
+            <ul>
+                <li class="flex items-center mb-4">
+                    <div class="w-4 h-4 bg-green-500 rounded-full mr-2"></div>
+                    Chapter 1: Introduction
+                </li>
+                <li class="flex items-center mb-4">
+                    <div class="w-4 h-4 bg-yellow-500 rounded-full mr-2"></div>
+                    Chapter 2: Basics
+                </li>
+                <li class="flex items-center mb-4">
+                    <div class="w-4 h-4 bg-gray-500 rounded-full mr-2"></div>
+                    Chapter 3: Advanced Topics
+                </li>
+                <!-- Add more chapters as needed -->
+            </ul>
+        </div>
+
+        <!-- Right Side: View Chapter Content -->
+        <div class="w-2/3 pl-8">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-3xl font-semibold mb-4">Chapter 1: Introduction</h2>
+                <p>
+                    Weve mentioned in the previous target that there are two personas in this project
+                    - An educator, who can create courses. And students who can sign up, browse available courses, and
+                    enrol in courses that interest them. They can then access lessons within their enrolled courses.
+
+                    The following format of describing
+                    features is called a "user story" in agile development. We write user storie
+                    s from the perspective of different personas in a project.
+                    <!-- Chapter content goes here -->
+                </p>
+                <div class="flex">
+                    <button
+                        class="mt-8 bg-blue-500 text-white rounded-md px-4 m-4 py-2 hover:bg-blue-600 transition duration-300">
+                        Mark as Complete
+                    </button>
+                    <button
+                        class="mt-8 bg-blue-500 text-white rounded-md px-4 m-4 py-2 hover:bg-blue-600 transition duration-300">
+                        Next Chapter>>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
