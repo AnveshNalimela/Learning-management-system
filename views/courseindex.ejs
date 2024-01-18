@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Details</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+
+<body class="bg-blue-100">
+
+    <div class="container mx-auto p-8 flex">
+        <!-- Left Side: Course Details -->
+        <div class="w-1/2 pr-8">
+            <h2 class="text-5xl font-semibold mb-4">Course Name</h2>
+
+            <!-- List of Chapters -->
+            <ul>
+                <li class="mb-2">Chapter 1: Introduction</li>
+                <li class="mb-2">Chapter 2: Basics</li>
+                <li class="mb-2">Chapter 3: Advanced Topics</li>
+                <!-- Add more chapters as needed -->
+            </ul>
+        </div>
+
+        <!-- Right Side: Add New Chapter and Add New Page -->
+        <div class="w-1/2 pl-8">
+            <div class="mb-4">
+                <h3 class="text-xl font-semibold mb-2">Add New Chapter</h3>
+                <div class="flex items-center">
+
+                    <input type="text" placeholder="Chapter Name"
+                        class="flex-grow border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:border-blue-500">
+                    <button
+                        class="bg-blue-500 text-white rounded-r-md px-4 py-2 hover:bg-blue-600 transition duration-300">
+                        +Add
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-xl font-semibold mb-2">Add New Page</h3>
+                <div class=" flex items-center ">
+                    <textarea placeholder="Page Name"
+                        class="flex-grow border-gray-300 rounded-l-md px-3 py-2 mt-5 focus:outline-none focus:border-blue-500"
+                        rows="20"></textarea>
+
+                </div>
+                <button
+                    class="bg-blue-500 text-white rounded-r-md px-4 py-2 w-fit hover:bg-blue-600 transition duration-300">
+                    +Add page
+                </button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
