@@ -14,11 +14,15 @@ module.exports = (sequelize, DataTypes) => {
     static async addCourse({ name, description }) {
       return await this.create({ name, description });
     }
+
+    static async getCourses() {
+      return await this.findAll();
+    }
   }
   Course.init({
     name: DataTypes.STRING,
     description: DataTypes.TEXT,
-    
+
   }, {
     sequelize,
     modelName: 'Course',

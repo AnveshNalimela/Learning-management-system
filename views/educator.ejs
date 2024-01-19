@@ -20,13 +20,15 @@
                 <img src="https://th.bing.com/th/id/R.7a2ea004dd85a4c84e7b74e89dab66a5?rik=lNGK6jH%2fWn3pcA&riu=http%3a%2f%2fcdn.onlinewebfonts.com%2fsvg%2fimg_460528.png&ehk=UGxHDuUeTES8Q4t4udZwaIg037OqUyNcYaAizrI%2bKnM%3d&risl=&pid=ImgRaw&r=0"
                     alt="Student Icon" class="w-8 h-8 mr-2">
                 <div>
-                    <p class="font-semibold text-gray-800">John Doe</p>
+                    <p class="font-semibold text-gray-800">
+                        <%=name %>
+                    </p>
                     <p class="text-gray-600">Educator ID: ABC123</p>
                 </div>
             </div>
 
             <!-- Welcome Message -->
-            <h1 class="text-3xl font-semibold mb-6">Welcome, John Doe!</h1>
+            <h1 class="text-3xl font-semibold mb-6">Welcome, <%= name %>!</h1>
 
             <div class="container mx-auto p-8">
                 <h2 class="text-2xl font-semibold mb-8">Create New Course</h2>
@@ -60,7 +62,7 @@
                 </div>
             </div>
             <!--Display already created courses-->
-            <%- include('ecourses.ejs') %>
+            <%- include('ecourses.ejs', {name:name,courses:courses}) %>
         </div>
         <%- include('footer.ejs') %>
 </body>

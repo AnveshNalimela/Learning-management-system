@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       return await this.create({ name: name });
     }
 
+    static async getChapters() {
+      return await this.findAll();
+    }
+
   }
   Chapter.init({
     name: DataTypes.STRING,

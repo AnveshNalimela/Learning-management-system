@@ -41,21 +41,61 @@ app.get("/student", async (request, response) => {
     })
 })
 
-app.get("/educator", async (request, response) => {
-    response.render('educator.ejs', {
-        title: "LMS Application",
+app.get("/educator/:name", async (request, response) => {
+    try {
+        const courses = await Course.getCourses();
+        const name = request.params.name
+        response.render('educator.ejs', {
+            name: name,
+            courses: courses,
 
-    })
+        })
+    } catch (error) {
+        console.log(error);
+    }
 })
 
 
+//route for new user signup
+app.post("/signup", async (request, response) => {
+    const role = request.body.role
+    console.log(role)
+    try {
+        if (role === "educator") {
+            const newuser = await Educator.addEducator({
+                name: request.body.name,
+                email: request.body.email,
+                password: request.body.password,
+                role: request.body.role,
+
+            })
+            console.log("new user eduactor added ")
+            console.log(newuser)
+            response.redirect(`/educator/${request.body.name}`);
+
+        }
+    } catch (error) {
+        console.log("new educator cannot be added");
+        console.log("error occured")
+        console.log(error)
+        response.status(500).json(error);
+    }
+
+
+})
+
+//route to view the courseindexe page
 app.get("/courseindexe/:courseName", async (request, response) => {
     const courseName = request.params.courseName;
+    const chapters = await Chapter.getChapters();
     response.render('courseindexe.ejs', {
         courseName: courseName,
+        chapters: chapters
     });
 });
 
+
+//route to add new course
 app.post("/course", async (request, response) => {
     const courseName = request.body.courseName;
     try {
@@ -64,7 +104,7 @@ app.post("/course", async (request, response) => {
             description: request.body.courseDescription,
         });
 
-        console.log(course.name);
+        console.log(courseName);
         console.log("New course added!");
 
         // Use backticks for template literals
@@ -76,6 +116,9 @@ app.post("/course", async (request, response) => {
     }
 });
 
+
+
+//route to add chapter to course
 app.post("/chapter/:courseName", async (request, response) => {
     const chapterName = request.body.chapterName;
     const courseName = request.params.courseName;
@@ -100,7 +143,7 @@ app.post("/chapter/:courseName", async (request, response) => {
 
 
 
-
+//route  to add page 
 app.post("/page/:courseName", async (request, response) => {
     const pageName = request.body.pageName;
     const courseName = request.params.courseName;
@@ -117,15 +160,5 @@ app.post("/page/:courseName", async (request, response) => {
         response.statusCode(500).json(error);
     }
 });
-
-
-
-
-
-
-
-
-
-
 
 module.exports = app;

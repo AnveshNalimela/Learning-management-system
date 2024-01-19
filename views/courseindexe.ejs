@@ -20,12 +20,7 @@
             </h2>
 
             <!-- List of Chapters -->
-            <ul>
-                <li class="mb-2">Chapter 1: Introduction</li>
-                <li class="mb-2">Chapter 2: Basics</li>
-                <li class="mb-2">Chapter 3: Advanced Topics</li>
-                <!-- Add more chapters as needed -->
-            </ul>
+            <%- include('chapterlist',{courseName:courseName,chapters:chapters}) %>
         </div>
 
         <!-- Right Side: Add New Chapter and Add New Page -->
@@ -53,7 +48,7 @@
                             class="flex-grow border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:border-blue-500">
                     </div>
                     <div class="flex  items-center ">
-                        <textarea placeholder="Page Content" name="pageContent"
+                        <textarea placeholder="Page " name="pageContent"
                             class="flex-grow border-gray-300 rounded-l-md px-3 py-2 mt-5 focus:outline-none focus:border-blue-500"
                             rows="10"></textarea>
                     </div>

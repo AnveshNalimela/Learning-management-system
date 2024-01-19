@@ -36,4 +36,9 @@ app.post("/page/:courseName", async (request, response) => {
     }
 })
 
+static async addEducator({ name, email, password }) {
+      return await this.create({ name, email, password, role: "Educator" });
+    }
+
+
 
