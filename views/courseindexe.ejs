@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course Details</title>
+    <title>
+        <%=courseName %>
+    </title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 </head>
 
@@ -13,7 +15,9 @@
     <div class="container mx-auto p-8 flex">
         <!-- Left Side: Course Details -->
         <div class="w-1/2 pr-8">
-            <h2 class="text-5xl font-semibold mb-4">Course Name</h2>
+            <h2 class="text-5xl font-semibold mb-4">
+                <%= courseName %>
+            </h2>
 
             <!-- List of Chapters -->
             <ul>
@@ -28,31 +32,39 @@
         <div class="w-1/2 pl-8">
             <div class="mb-4">
                 <h3 class="text-xl font-semibold mb-2">Add New Chapter</h3>
-                <div class="flex items-center">
+                <form action='/chapter/<%= courseName %>' method="post">
+                    <div class="flex items-center">
 
-                    <input type="text" placeholder="Chapter Name"
-                        class="flex-grow border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:border-blue-500">
-                    <button
-                        class="bg-blue-500 text-white rounded-r-md px-4 py-2 hover:bg-blue-600 transition duration-300">
-                        +Add
-                    </button>
-                </div>
+                        <input type="text" placeholder="Chapter Name" name="chapterName"
+                            class="flex-grow border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:border-blue-500">
+                        <input type="submit"
+                            class="bg-blue-500 text-white rounded-r-md px-4 py-2 hover:bg-blue-600 transition duration-300"
+                            value="+Add">
+
+                    </div>
+                </form>
             </div>
 
             <div>
                 <h3 class="text-xl font-semibold mb-2">Add New Page</h3>
-                <div class=" flex items-center ">
-                    <textarea placeholder="Page Name"
-                        class="flex-grow border-gray-300 rounded-l-md px-3 py-2 mt-5 focus:outline-none focus:border-blue-500"
-                        rows="20"></textarea>
+                <form action='/page/<%= courseName %>' method="post">
+                    <div class="flex  items-center ">
+                        <input type="text" placeholder="Page Name" name="pageName"
+                            class="flex-grow border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div class="flex  items-center ">
+                        <textarea placeholder="Page Content" name="pageContent"
+                            class="flex-grow border-gray-300 rounded-l-md px-3 py-2 mt-5 focus:outline-none focus:border-blue-500"
+                            rows="10"></textarea>
+                    </div>
 
-                </div>
-                <button
-                    class="bg-blue-500 text-white rounded-r-md px-4 py-2 w-fit hover:bg-blue-600 transition duration-300">
-                    +Add page
-                </button>
+                    <input type="submit"
+                        class="bg-blue-500 text-white rounded-r-md px-4 mt-4 py-2 w-fit hover:bg-blue-600 transition duration-300"
+                        value="+Add page">
+                </form>
             </div>
         </div>
+    </div>
     </div>
 
 </body>

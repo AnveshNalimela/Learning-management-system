@@ -4,14 +4,13 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Page extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+
     static associate(models) {
-      page.belongsTo(models.chapter);
+      //Page.belongsTo(models.Chapter);
       // define association here
+    }
+    static async addPage({ name, content }) {
+      return await this.create({ name, content });
     }
   }
   Page.init({

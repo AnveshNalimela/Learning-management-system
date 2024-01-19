@@ -10,10 +10,14 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      Chapter.belongsTo(models.Course);
+      //Chapter.hasMany(models.Page)
       // define association here
-      chapter.belongsTo(models.course);
-      chapter.hasMany(models.page)
     }
+    static async addChapter({ name, courseId }) {
+      return await this.create({ name, courseId });
+    }
+
   }
   Chapter.init({
     name: DataTypes.STRING

@@ -33,7 +33,7 @@
                 <div class="bg-white p-4 m-8 rounded-md w-1/2">
 
                     <!-- Course Creation Form -->
-                    <form>
+                    <form action="/course" method="post">
                         <!-- Course Name -->
                         <div class="mb-4">
                             <label for="courseName" class="block text-gray-600 text-sm font-medium mb-2">Course
@@ -60,9 +60,9 @@
                 </div>
             </div>
             <!--Display already created courses-->
-            <%- include(ecourses.ejs) %>
+            <%- include('ecourses.ejs') %>
         </div>
-    <%- include('footer.ejs') %>
+        <%- include('footer.ejs') %>
 </body>
 
 </html>

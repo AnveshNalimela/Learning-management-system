@@ -2,3 +2,38 @@ sudo service postgresql start
 
 
 sudo service postgresql status 
+
+
+static  async addCourse({ name, description }) {
+      return await  this.create({ name, description });
+    }
+
+
+    Chapter.belongsTo(models.Course);
+      Chapter.hasMany(models.Page)
+
+
+Course.belongsTo(models.Educator);
+      Course.hasMany(models.Chapter);
+
+
+
+
+app.post("/page/:courseName", async (request, response) => {
+    const pageName = request.body.pageName;
+    const courseName = request.params.courseName;
+    try {
+        const page = await Page.addPage({
+            name: request.body.pageName,
+            content: request.body.pageContent,
+        })
+        console.log("new page was added")
+        console.log(pageName)
+        response.redirect(`/courseindexe/${courseName}`);
+    } catch (error) {
+        console.log("new page was not created")
+        response.statusCode(500).json(error);
+    }
+})
+
+
