@@ -81,8 +81,7 @@ app.post("/chapter/:courseName", async (request, response) => {
     const courseName = request.params.courseName;
     try {
         const chapter = await Chapter.addChapter({
-            name: request.body.chapterName,
-            courseId: courseName,
+            name: request.body.chapterName
         })
         console.log("new chapter was created")
         console.log(chapterName)
@@ -90,11 +89,34 @@ app.post("/chapter/:courseName", async (request, response) => {
         response.redirect(`/courseindexe/${courseName}`);
     } catch (error) {
         console.log("new chapter was not created")
-        return response.statusCode(500).json(error);
+        response.statusCode(500).json(error);
     }
-})
+});
 
 
+
+
+
+
+
+
+
+app.post("/page/:courseName", async (request, response) => {
+    const pageName = request.body.pageName;
+    const courseName = request.params.courseName;
+    try {
+        const page = await Page.addPage({
+            name: request.body.pageName,
+            content: request.body.pageContent,
+        })
+        console.log("new page was added")
+        console.log(pageName)
+        response.redirect(`/courseindexe/${courseName}`);
+    } catch (error) {
+        console.log("new page was not created")
+        response.statusCode(500).json(error);
+    }
+});
 
 
 

@@ -4,23 +4,19 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Chapter extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+
     static associate(models) {
-      Chapter.belongsTo(models.Course);
+      //Chapter.belongsTo(models.Course);
       //Chapter.hasMany(models.Page)
-      // define association here
+
     }
-    static async addChapter({ name, courseId }) {
-      return await this.create({ name, courseId });
+    static async addChapter({ name }) {
+      return await this.create({ name: name });
     }
 
   }
   Chapter.init({
-    name: DataTypes.STRING
+    name: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Chapter',
