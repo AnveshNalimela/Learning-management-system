@@ -10,8 +10,11 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-    }
+      Educator.hasMany(models.Course, {
+        foreignKey: 'educatorId',
+
+      })
+    };
 
     static async addEducator({ name, email, password, role }) {
       return await this.create({ name, email, password, role });
