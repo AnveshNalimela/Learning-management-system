@@ -27,7 +27,7 @@
         <div class="w-1/2 pl-8">
             <div class="mb-4">
                 <h3 class="text-xl font-semibold mb-2">Add New Chapter</h3>
-                <form action='/chapter/<%= courseName %>' method="post">
+                <form action='/chapter/<%= courseId %>' method="post">
                     <div class="flex items-center">
 
                         <input type="text" placeholder="Chapter Name" name="chapterName"
@@ -42,7 +42,9 @@
 
             <div>
                 <h3 class="text-xl font-semibold mb-2">Add New Page</h3>
-                <form action='/page/<%= courseName %>' method="post">
+                <form action='/page/<%= courseId %>' method="post">
+                    <input type="text" placeholder="Chapter Name" name="chapterName"
+                        class="flex-grow border-gray-300 rounded-l-md px-3 py-2 mb-2 focus:outline-none focus:border-blue-500">
                     <div class="flex  items-center ">
                         <input type="text" placeholder="Page Name" name="pageName"
                             class="flex-grow border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:border-blue-500">

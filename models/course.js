@@ -15,12 +15,15 @@ module.exports = (sequelize, DataTypes) => {
 
     }
 
-    static async addCourse({ name, description }) {
-      return await this.create({ name, description });
+    static async addCourse({ name, description, educatorId }) {
+      return await this.create({ name, description, educatorId });
     }
 
     static async getCourses() {
       return await this.findAll();
+    }
+    static async getCourse(id) {
+      return await this.findByPk(id);
     }
   }
   Course.init({

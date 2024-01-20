@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup Page</title>
+    <title><%= title %></title>
     <!-- Include Tailwind CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
@@ -18,7 +18,7 @@
             <h2 class="text-3xl font-semibold mb-4 text-blue-500">Sign Up</h2>
 
             <!-- Signup Form -->
-            <form action="/signup" method="post">
+            <form action="/user" method="post">
                 <!-- Name Field -->
                 <div class="mb-4">
                     <label for="name" class="block text-gray-600 text-sm font-medium mb-2 ">Name</label>

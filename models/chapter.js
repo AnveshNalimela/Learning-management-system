@@ -14,14 +14,20 @@ module.exports = (sequelize, DataTypes) => {
       })
 
     }
-    static async addChapter({ name }) {
-      return await this.create({ name: name });
+    static async addChapter({ name, courseId }) {
+      return await this.create({ name: name, courseId: courseId });
     }
 
     static async getChapters() {
       return await this.findAll();
     }
-
+    static async getChapter(courseId) {
+      return await this.findAll({
+        where: {
+          courseId: courseId,
+        },
+      })
+    }
   }
   Chapter.init({
     name: DataTypes.STRING,
