@@ -6,8 +6,10 @@ module.exports = (sequelize, DataTypes) => {
   class Page extends Model {
 
     static associate(models) {
-      //Page.belongsTo(models.Chapter);
-      // define association here
+      Page.belongsTo(models.Chapter, {
+        foreignKey: 'chapterId'
+      });
+
     }
     static async addPage({ name, content }) {
       return await this.create({ name, content });

@@ -6,8 +6,12 @@ module.exports = (sequelize, DataTypes) => {
   class Chapter extends Model {
 
     static associate(models) {
-      //Chapter.belongsTo(models.Course);
-      //Chapter.hasMany(models.Page)
+      Chapter.belongsTo(models.Course, {
+        foreignKey: 'courseId'
+      });
+      Chapter.hasMany(models.Page, {
+        foreignKey: 'chapterId'
+      })
 
     }
     static async addChapter({ name }) {

@@ -9,7 +9,9 @@ module.exports = (sequelize, DataTypes) => {
       Course.belongsTo(models.Educator, {
         foreignKey: 'educatorId'
       });
-      //Course.hasMany(models.Chapter);
+      Course.hasMany(models.Chapter, {
+        foreignKey: 'courseId'
+      });
 
     }
 
