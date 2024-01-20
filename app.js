@@ -117,7 +117,9 @@ app.get("/educator", connectEnsureLogin.ensureLoggedIn(), async (request, respon
     console.log("Educator logged in successfully");
     console.log(request.user.name);
     try {
-        const courses = await Course.getCourses();
+        const courses = await Course.findAll({
+            where: { educatorId: request.user.id },
+        });
         const name = request.user.name;
         response.render('educator.ejs', {
             name: name,
@@ -214,14 +216,13 @@ app.post("/page/:courseId", connectEnsureLogin.ensureLoggedIn(), async (request,
     const chapter = await Chapter.findOne({
         where: { name: request.body.chapterName },
         attributes: ['id'],
-      });
+    });
     const chapterId = chapter.id
     console.log(chapterId)
     console.log(request.params.courseId)
     try {
         const page = await Page.create({
             name: request.body.pageName,
-            content: request.body.pageContent,
             chapterId: chapterId
         })
         console.log("new page was added")

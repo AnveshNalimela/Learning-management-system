@@ -11,13 +11,12 @@ module.exports = (sequelize, DataTypes) => {
       });
 
     }
-    static async addPage({ name, content }) {
-      return await this.create({ name, content });
+    static async addPage({ name }) {
+      return await this.create({ name });
     }
   }
   Page.init({
-    name: DataTypes.STRING,
-    content: DataTypes.TEXT
+    name: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Page',
