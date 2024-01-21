@@ -4,3 +4,8 @@ sudo service postgresql start
 sudo service postgresql status 
 
 
+<!-- Box for Completion Status -->
+        <div class="flex items-center">
+            <div class="w-4 h-4 bg-blue-500 rounded-full mr-2"></div>
+            <p class="text-sm text-gray-600">Completed</p>
+        </div>

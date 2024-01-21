@@ -11,12 +11,24 @@ module.exports = (sequelize, DataTypes) => {
       });
 
     }
-    static async addPage({ name }) {
-      return await this.create({ name });
+    static async addPage({ name, chapterId }) {
+      return await this.create({ name, chapterId });
     }
+
+    static async setCompleted(id) {
+      const page = await this.findByPk(id);
+      page.completed = true;
+      await page.save();
+      return page;
+    }
+
   }
   Page.init({
-    name: DataTypes.STRING
+    name: DataTypes.STRING,
+    completed: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false // Default value is set to false
+    }
   }, {
     sequelize,
     modelName: 'Page',

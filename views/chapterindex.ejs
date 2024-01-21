@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Viewer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <script>
+        function markPageAsComplete(pageId) {
+            fetch(`/SetCompletion/${pageId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    completed: true,
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response if needed
+                    console.log('Marked as complete:', data);
+                })
+                .catch(error => {
+                    console.error('Error updating completion status:', error);
+                });
+        }
+        setTimeout(() => {
+            window.location.reload();
+        }, 10);
+    </script>
+</head>
+
+
+<body class="bg-blue-100">
+    <!-- Right Side: View Chapter Content -->
+    <div class="w-2/3 p-8">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-3xl font-semibold mb-4">Chapter <%= chapter.id %>: <%= chapter.name %>
+            </h2>
+            <% for( var i=0; i < pages.length; i++) { %>
+                <p>
+                    Page No :<%= pages[i].id %> : <%= pages[i].name %>
+                </p>
+
+                <!-- Completion Status -->
+                <div class="rounded w-15 h-8 flex items-center justify-center text-white m-2
+                        <% if (pages[i].completed) { %> bg-green-500 <% } else { %> bg-blue-300 <% } %>">
+                    <%= pages[i].completed ? 'Completed' : 'Incomplete' %>
+                </div>
+                <div class="flex">
+                    <button
+                        class="mt-8 bg-blue-500 text-white rounded-md px-4 m-4 py-2 hover:bg-blue-600 transition duration-300"
+                        onclick="markPageAsComplete(<%= pages[i].id %>)">
+                        Mark as Complete
+                    </button>
+
+                </div>
+                <% } %>
+        </div>
+    </div>
+
+
+
+
+</body>
+
+</html>

@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require("path");
-const { Educator, Course, Chapter, Page } = require("./models");
+const { Educator, Course, Chapter, Page, Student, Enrollments } = require("./models");
 const bodyParser = require("body-parser");
 const passport = require('passport');
 const connectEnsureLogin = require('connect-ensure-login');
@@ -34,7 +34,7 @@ passport.use(new LocalStrategy({
     passwordField: "password"
 },
     (username, password, done) => {
-        Educator.findOne({ where: { email: username } })
+        Student.findOne({ where: { email: username } })
             .then(async function (user) {
                 const result = await bcrypt.compare(password, user.password);
                 if (result) {
@@ -53,7 +53,7 @@ passport.serializeUser((user, done) => {
     done(null, user.id);
 });
 passport.deserializeUser((id, done) => {
-    Educator.findByPk(id)
+    Student.findByPk(id)
         .then((user) => { done(null, user) })
         .catch((error) => done(error, null))
 });
@@ -92,6 +92,7 @@ app.post("/user", async (request, response) => {
                 role: request.body.role,
 
             })
+
             console.log("new user educator added ")
             console.log(educator)
             request.login(educator, (err) => {
@@ -102,9 +103,26 @@ app.post("/user", async (request, response) => {
 
             })
 
+        } else {
+            const student = await Student.create({
+                name: request.body.name,
+                email: request.body.email,
+                password: hashedPwd,
+                role: request.body.role,
+
+            })
+            console.log("new user educator added ")
+            console.log(student)
+            request.login(student, (err) => {
+                if (err) {
+                    console.log(err)
+                }
+                response.redirect(`/student`);
+
+            })
         }
     } catch (error) {
-        console.log("new educator cannot be added");
+        console.log("new user cannot be added");
         console.log("error occured")
         console.log(error)
         response.status(500).json(error);
@@ -130,6 +148,70 @@ app.get("/educator", connectEnsureLogin.ensureLoggedIn(), async (request, respon
     }
 });
 
+app.get("/student", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
+    console.log("student logged in successfully");
+    console.log(request.user.name);
+    const courses = await Course.findAll();
+    const enrollments = await Enrollments.findAll({
+        where: {
+            studentId: request.user.id,
+        }
+    })
+    const enrolledCourseIds = enrollments.map(enrollment => enrollment.courseId)
+    console.log(enrolledCourseIds)
+    const enrolledCourses = await Course.findAll({ where: { id: enrolledCourseIds } })
+
+    try {
+        await response.render('student.ejs', {
+            name: request.user.name,
+            courses: courses,
+            enrolledCourses: enrolledCourses,
+        });
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+app.get("/enroll/:courseId", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
+    console.log(request.user.id)
+    const enroll = await Enrollments.create({
+        studentId: request.user.id,
+        courseId: request.params.courseId
+    })
+    console.log("new enrollemnt is added")
+    response.redirect(`/courseindexs/${request.params.courseId}`);
+
+})
+
+app.get('/courseindexs/:courseId', connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
+    const course = await Course.findByPk(request.params.courseId)
+    const chapters = await Chapter.getChapter(request.params.courseId)
+    response.render('courseindexs.ejs', {
+        course: course,
+        chapters: chapters
+    })
+})
+
+
+app.get("/chapterindex/:chapterId", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
+    const chapter = await Chapter.findByPk(request.params.chapterId)
+    const pages = await Page.findAll({ where: { chapterId: request.params.chapterId } })
+    response.render('chapterindex.ejs', {
+        chapter: chapter,
+        pages: pages,
+    })
+    console.log(pages)
+})
+
+
+
+
+
+
+
+
+
+
 
 //route for the authetication
 app.get("/login", async (request, response) => {
@@ -139,7 +221,7 @@ app.get("/login", async (request, response) => {
     });
 });
 app.post("/session", passport.authenticate("local", {
-    successRedirect: "/educator",
+    successRedirect: "/student",
     failureRedirect: "/login",
     failureFlash: true
 }));
@@ -230,6 +312,18 @@ app.post("/page/:courseId", connectEnsureLogin.ensureLoggedIn(), async (request,
     } catch (error) {
         console.log("new page was not created")
         response.statusCode(500).json(error);
+    }
+});
+
+
+app.put('/SetCompletion/:pageId', async (request, response) => {
+    try {
+        const page = await Page.setCompleted(request.params.pageId)
+        console.log(page.name)
+        console.log("page status updated")
+    } catch (error) {
+        console.log(error);
+        console.log("page status update failed")
     }
 });
 
