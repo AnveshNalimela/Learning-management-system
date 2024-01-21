@@ -20,7 +20,8 @@ module.exports = (sequelize, DataTypes) => {
     completionPercentage: {
       type: DataTypes.FLOAT, // You can use DECIMAL if you want to store exact values
       defaultValue: 0,
-  },
+    }
+  }, {
     sequelize,
     modelName: 'Enrollments',
   });

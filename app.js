@@ -129,6 +129,28 @@ app.post("/user", async (request, response) => {
     }
 })
 
+app.get('/password-change', connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
+    try {
+        response.render("password-change.ejs")
+    } catch (error) {
+        console.log('Error in rendering password-change page')
+    }
+})
+
+app.post("/password-change", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
+    if (request.body.newPassword === request.body.confirmPassword) {
+        const hashedPwd = await bcrypt.hash(request.body.newPassword, saltRounds)
+        if (request.user.role === "student") {
+            const newUser = await Student.changePassword(request.user.id, hashedPwd)
+        } else {
+            const newUser = await Educator.changePassword(request.user.id, hashedPwd)
+        }
+        console.log("password updated sucessfully")
+        response.redirect("/")
+
+    }
+})
+
 
 //route for the educator home page
 app.get("/educator", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
@@ -186,6 +208,8 @@ app.get("/enroll/:courseId", connectEnsureLogin.ensureLoggedIn(), async (request
 app.get('/courseindexs/:courseId', connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
     const course = await Course.findByPk(request.params.courseId)
     const chapters = await Chapter.getChapter(request.params.courseId)
+    const enrollment = await Enrollment.findAll({ where: { courseId: request.params.courseId, studentId: request.user.id } })
+    console.log(enrollment.id)
     response.render('courseindexs.ejs', {
         course: course,
         chapters: chapters

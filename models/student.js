@@ -12,6 +12,13 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+    static async changePassword(studentId, hashedPwd) {
+
+      const updatedStudent = await this.findByPk(studentId)
+      updatedStudent.password = hashedPwd
+      await updatedStudent.save();
+      return updatedStudent;
+    }
   }
   Student.init({
     name: DataTypes.STRING,

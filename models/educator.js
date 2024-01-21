@@ -19,6 +19,15 @@ module.exports = (sequelize, DataTypes) => {
     static async addEducator({ name, email, password, role }) {
       return await this.create({ name, email, password, role });
     }
+    static async changePassword(educatorId, hashedPwd) {
+      
+        const updatedEducator = await this.findByPk(educatorId)
+        updatedEducator.password=hashedPwd
+        await updatedEducator.save();
+        return updatedEducator;
+    }
+          
+
 
   }
   Educator.init({
