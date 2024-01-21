@@ -25,10 +25,11 @@
                 .catch(error => {
                     console.error('Error updating completion status:', error);
                 });
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
         }
-        setTimeout(() => {
-            window.location.reload();
-        }, 10);
+
     </script>
 </head>
 

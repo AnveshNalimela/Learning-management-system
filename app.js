@@ -66,19 +66,19 @@ passport.deserializeUser((id, done) => {
         Student.findByPk(id),
         Educator.findByPk(id),
     ])
-    .then(([student, educator]) => {
-        // Check which model returned a result
-        const user = student || educator;
+        .then(([student, educator]) => {
+            // Check which model returned a result
+            const user = student || educator;
 
-        if (user) {
-            done(null, user);
-        } else {
-            done(new Error('User not found'), null);
-        }
-    })
-    .catch((error) => {
-        done(error, null);
-    });
+            if (user) {
+                done(null, user);
+            } else {
+                done(new Error('User not found'), null);
+            }
+        })
+        .catch((error) => {
+            done(error, null);
+        });
 });
 
 
@@ -234,7 +234,7 @@ app.get("/enroll/:courseId", connectEnsureLogin.ensureLoggedIn(), async (request
 app.get('/courseindexs/:courseId', connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
     const course = await Course.findByPk(request.params.courseId)
     const chapters = await Chapter.getChapter(request.params.courseId)
-    const enrollment = await Enrollment.findAll({ where: { courseId: request.params.courseId, studentId: request.user.id } })
+    const enrollment = await Enrollments.findAll({ where: { courseId: request.params.courseId, studentId: request.user.id } })
     console.log(enrollment.id)
     response.render('courseindexs.ejs', {
         course: course,
@@ -305,16 +305,16 @@ app.post("/course", connectEnsureLogin.ensureLoggedIn(), async (request, respons
     const courseName = request.body.courseName;
     console.log(courseName)
     const educatorId = request.user.id
+    console.log(educatorId)
     try {
-        const course = await Course.create({
+        console.log('added started')
+        const course = await Course.addCourse({
             name: request.body.courseName,
             description: request.body.courseDescription,
             educatorId: educatorId
 
         });
         console.log("New course added!");
-        // Use backticks for template literals
-        console.log(course.id)
         response.redirect(`/courseindexe/${course.id}`);
     } catch (error) {
         console.log("New course not added!");

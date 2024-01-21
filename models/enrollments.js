@@ -17,10 +17,6 @@ module.exports = (sequelize, DataTypes) => {
   Enrollments.init({
     studentId: DataTypes.INTEGER,
     courseId: DataTypes.INTEGER,
-    completionPercentage: {
-      type: DataTypes.FLOAT, // You can use DECIMAL if you want to store exact values
-      defaultValue: 0,
-    }
   }, {
     sequelize,
     modelName: 'Enrollments',
