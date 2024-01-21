@@ -165,7 +165,6 @@ app.get('/password-change', connectEnsureLogin.ensureLoggedIn(), async (request,
 app.post("/password-change", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
     if (request.body.newPassword === request.body.confirmPassword) {
         const hashedPwd = await bcrypt.hash(request.body.newPassword, saltRounds)
-        await User.changePassword(request.user.id, hashedpwd)
         if (request.user.role === "student") {
             const newUser = await Student.changePassword(request.user.id, hashedPwd)
         } else {
@@ -357,25 +356,33 @@ app.post("/chapter/:courseId", connectEnsureLogin.ensureLoggedIn(), async (reque
 });
 
 
-//route to add pages
 app.post("/page/:courseId", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
     const chapter = await Chapter.findOne({
         where: { name: request.body.chapterName },
         attributes: ['id'],
     });
-    const chapterId = chapter.id
-    console.log(chapterId)
-    console.log(request.params.courseId)
+
+    if (!chapter) {
+        // Handle the case where the chapter is not found
+        console.log("Chapter not found");
+        return response.status(404).send("Chapter not found");
+    }
+
+    const chapterId = chapter.id;
+
+    console.log("Chapter ID:", chapterId);
+
     try {
-        const page = await Page.create({
+        const page = await Page.addPage({
             name: request.body.pageName,
-            chapterId: chapterId
-        })
-        console.log("new page was added")
+            chapterId: chapter.id,
+        });
+
+        console.log("New page added:", page.name);
         response.redirect(`/courseindexe/${request.params.courseId}`);
     } catch (error) {
-        console.log("new page was not created")
-        response.statusCode(500).json(error);
+        console.error("Error creating page:", error);
+        response.status(500).send("Error creating page");
     }
 });
 

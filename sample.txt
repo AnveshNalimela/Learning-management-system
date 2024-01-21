@@ -36,3 +36,26 @@ passport.deserializeUser((id, done) => {
         .then((user) => { done(null, user) })
         .catch((error) => done(error, null))
 });
+
+
+//route to add pages
+app.post("/page/:courseId", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
+    const chapter = await Chapter.findOne({
+        where: { name: request.body.chapterName },
+        attributes: ['id'],
+    });
+    const chapterId = chapter.id
+    console.log(chapterId)
+    console.log(request.params.courseId)
+    try {
+        const page = await Page.addPage({
+            name: request.body.pageName,
+            chapterId: chapter.id,
+        })
+        console.log("new page was added")
+        response.redirect(`/courseindexe/${request.params.courseId}`);
+    } catch (error) {
+        console.log("new page was not created")
+        response.send(error)
+    }
+});
