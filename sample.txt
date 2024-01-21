@@ -9,3 +9,30 @@ sudo service postgresql status
             <div class="w-4 h-4 bg-blue-500 rounded-full mr-2"></div>
             <p class="text-sm text-gray-600">Completed</p>
         </div>
+
+
+local strategy for  authetication
+passport.use(new LocalStrategy({
+    usernameField: "email",// this is the name of the input field in our signup
+    passwordField: "password",
+},
+    (username, password, done) => {
+        Educator.findOne({ where: { email: username } })
+            .then(async function (user) {
+                const result = await bcrypt.compare(password, user.password);
+                if (result) {
+                    return done(null, user);
+                } else {
+                    return done(null, false, { message: "Invalid password" });
+                }
+            })
+            .catch((error) => {
+                return done(error);
+            });
+        
+    }))
+passport.deserializeUser((id, done) => {
+    Student.findByPk(id)
+        .then((user) => { done(null, user) })
+        .catch((error) => done(error, null))
+});

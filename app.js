@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require("path");
-const { Educator, Course, Chapter, Page, Student, Enrollments } = require("./models");
+const { Educator, Course, Chapter, Page, Student, Enrollments, User } = require("./models");
 const bodyParser = require("body-parser");
 const passport = require('passport');
 const connectEnsureLogin = require('connect-ensure-login');
@@ -28,35 +28,59 @@ app.use(passport.session())
 
 
 
-//local strategy for  authetication
+
 passport.use(new LocalStrategy({
-    usernameField: "email",// this is the name of the input field in our signup
-    passwordField: "password"
-},
-    (username, password, done) => {
-        Student.findOne({ where: { email: username } })
-            .then(async function (user) {
-                const result = await bcrypt.compare(password, user.password);
-                if (result) {
-                    return done(null, user);
-                } else {
-                    return done(null, false, { message: "Invalid password" });
-                }
-            })
-            .catch((error) => {
-                return done(error);
-            });
-    }))
+    usernameField: "email",
+    passwordField: "password",
+}, async (username, password, done) => {
+    try {
+        // Search in both Educator and Student models
+        const educator = await Educator.findOne({ where: { email: username } });
+        const student = await Student.findOne({ where: { email: username } });
+
+        // Check if the user is found in either Educator or Student model
+        const user = educator || student;
+
+        if (!user) {
+            return done(null, false, { message: "User not found" });
+        }
+
+        const result = await bcrypt.compare(password, user.password);
+        if (result) {
+            return done(null, user);
+        } else {
+            return done(null, false, { message: "Invalid password" });
+        }
+    } catch (error) {
+        return done(error);
+    }
+}));
 
 passport.serializeUser((user, done) => {
     console.log("serializing user in session ", user.id);
     done(null, user.id);
 });
+
 passport.deserializeUser((id, done) => {
-    Student.findByPk(id)
-        .then((user) => { done(null, user) })
-        .catch((error) => done(error, null))
+    Promise.all([
+        Student.findByPk(id),
+        Educator.findByPk(id),
+    ])
+    .then(([student, educator]) => {
+        // Check which model returned a result
+        const user = student || educator;
+
+        if (user) {
+            done(null, user);
+        } else {
+            done(new Error('User not found'), null);
+        }
+    })
+    .catch((error) => {
+        done(error, null);
+    });
 });
+
 
 
 app.get("/", async (request, response) => {
@@ -98,6 +122,7 @@ app.post("/user", async (request, response) => {
             request.login(educator, (err) => {
                 if (err) {
                     console.log(err)
+                    console.log("error occured")
                 }
                 response.redirect(`/educator`);
 
@@ -111,7 +136,7 @@ app.post("/user", async (request, response) => {
                 role: request.body.role,
 
             })
-            console.log("new user educator added ")
+            console.log("new user student added ")
             console.log(student)
             request.login(student, (err) => {
                 if (err) {
@@ -140,6 +165,7 @@ app.get('/password-change', connectEnsureLogin.ensureLoggedIn(), async (request,
 app.post("/password-change", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
     if (request.body.newPassword === request.body.confirmPassword) {
         const hashedPwd = await bcrypt.hash(request.body.newPassword, saltRounds)
+        await User.changePassword(request.user.id, hashedpwd)
         if (request.user.role === "student") {
             const newUser = await Student.changePassword(request.user.id, hashedPwd)
         } else {
@@ -239,16 +265,30 @@ app.get("/chapterindex/:chapterId", connectEnsureLogin.ensureLoggedIn(), async (
 
 //route for the authetication
 app.get("/login", async (request, response) => {
+    console.log("login failed")
     response.render('login.ejs', {
         title: "LMS Application-SignIn Page",
         message: request.flash('error') // Display error messages if any
     });
 });
+
+
+
 app.post("/session", passport.authenticate("local", {
-    successRedirect: "/student",
+    successRedirect: "/page",
     failureRedirect: "/login",
     failureFlash: true
 }));
+
+app.get("/page", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
+    if (request.user.role === "educator") {
+        response.redirect('/educator')
+    } else {
+        response.redirect('/student')
+    }
+})
+
+
 
 //route for the signout
 app.get("/signout", (request, response, next) => {
