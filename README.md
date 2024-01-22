@@ -29,5 +29,9 @@ Eduacator can Add new Course
 by providing the name and description of the courses it will redirect to courseindex page 
 ![image](https://github.com/AnveshNalimela/wd201-LMS/assets/151531961/2dff9a56-ebca-455a-b6c7-4c1cfb6f135b)
 
+Educator can Add new chapter assocaited with that courses in course page  which look like this
+![image](https://github.com/AnveshNalimela/wd201-LMS/assets/151531961/36c46c54-a8bf-43cb-9584-afe9d3c42e34)
+Added chapters will displayed under course name and they are dynamic
+
 
 
