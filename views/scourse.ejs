@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%=course.name %>
+    </title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+
+<body class="bg-blue-100">
+    <a href="/student"
+        class="block bg-blue-500 text-white rounded-md py-2 px-4 hover:bg-blue-600 transition duration-300">
+        Go to Dashboard
+    </a>
+
+
+    <div class="container mx-auto p-8 flex items-center ">
+        <!-- Left Side: Course Details -->
+        <div class=" pr-8">
+            <h2 class="text-5xl text-blue-600 font-semibold mb-4 ">
+                Course :<%= course.name %>
+            </h2>
+            <p class="text-3xl font-mono">
+                <%= course.description %>
+            </p>
+            <div class="mt-5 p-10   ">
+                <ul>
+                    <% for( var i=0; i < chapters.length; i++) { %>
+                        <a href="/schapter/<%= chapters[i].id %>">
+                            <li class="mb-2 text-2xl font-sans">Chapter <%= i+1 %> : <%= chapters[i].name %>
+                            </li>
+                        </a>
+                        <% } %>
+                </ul>
+            </div>
+
+        </div>
+
+
+    </div>
+
+</body>
+
+</html>

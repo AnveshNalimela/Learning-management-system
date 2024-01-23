@@ -59,3 +59,7 @@ app.post("/page/:courseId", connectEnsureLogin.ensureLoggedIn(), async (request,
         response.send(error)
     }
 });
+
+
+"pretest": "cross-env NODE_ENV=test npx sequelize-cli db:drop && cross-env NODE_ENV=test npx sequelize-cli db:create",
+    "test": "cross-env NODE_ENV=test jest --detectOpenHandles",

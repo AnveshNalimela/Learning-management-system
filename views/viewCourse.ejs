@@ -12,13 +12,13 @@
 </head>
 
 <body class="bg-blue-100 ">
-    <div class="container mx-auto p-8 flex">
+    <div class="container items-center justify-content h-3/4 mx-auto p-8 flex">
         <!-- Left Side: Course Details -->
         <div class="w-1/2 pr-8">
-            <h2 class="text-5xl font-semibold mb-4 ">
+            <h2 class="text-5xl text-blue-600 font-semibold mb-4 ">
                 Course:<%= course.name %>
             </h2>
-            <p class="text-3xl">
+            <p class="text-2xl">
                 <%= course.description %>
             </p>
             <div class="mt-5 p-10   ">
@@ -34,5 +34,15 @@
             </div>
 
         </div>
+
+    </div>
+    <div
+        class="w-50 h-12 bg-blue-400 text-white rounded-md px-2 py-3 mx-20 cursor-pointer hover:bg-blue-600 transition duration-300">
+        <a href="/enrollCourse/<%=course.id %>" class="block text-center">
+            <h3 class="text-xl font-semibold mb-2">Enroll Course</h3>
+        </a>
+    </div>
+
 </body>
+
 </html>

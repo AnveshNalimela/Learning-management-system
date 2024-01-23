@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= chapterName %>
+    </title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+
+<body class="bg-blue-100">
+    <a href="/course/<%=courseId %>"
+        class="block bg-blue-500 text-white rounded-md py-2 px-4 hover:bg-blue-600 transition duration-300">
+        Go to Course Index
+    </a>
+
+
+    <div class="container mx-auto p-8 flex">
+        <!-- Left Side: Course Details -->
+
+        <div class="w-1/2 pr-8">
+            <h2 class="text-5xl font-semibold mb-4">
+                <%= chapterName %>
+            </h2>
+            <h3 class="text-2xl mt-2">List of pages..!</h3>
+            <div class="mt-2 p-10   ">
+                <ul>
+                    <% for( var i=0; i < pages.length; i++) { %>
+                        <li class="mb-2 text-xl">Page <%= i+1 %> : <%= pages[i].name %>
+                        </li>
+                        <% } %>
+                </ul>
+            </div>
+        </div>
+
+
+
+        <!-- Right Side: Add New Chapter and Add New Page -->
+        <div class="w-1/2 pl-8">
+            <div>
+                <h3 class="text-xl font-semibold mb-2">Add New Page</h3>
+                <form action="/page" method="post">
+                    <input type="hidden" name="chapterId" value=<%=chapterId %> >
+                    <div class="flex items-center ">
+                        <input type="text" placeholder="Page Name" name="pageName"
+                            class="flex-grow border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div class="flex items-center ">
+                        <input type="submit"
+                            class="bg-blue-500 text-white rounded-r-md px-4 mt-4 py-2 w-fit hover:bg-blue-600 transition duration-300"
+                            value="+Add page">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+
+</body>
+
+</html>

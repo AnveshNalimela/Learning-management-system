@@ -13,28 +13,39 @@
 <body class="bg-blue-100">
     <a href="/educator"
         class="block bg-blue-500 text-white rounded-md py-2 px-4 hover:bg-blue-600 transition duration-300">
-        Go to Course Index
+        Go to Dashboard
     </a>
 
 
     <div class="container mx-auto p-8 flex">
         <!-- Left Side: Course Details -->
         <div class="w-1/2 pr-8">
-            <h2 class="text-5xl font-semibold mb-4">
-                <%= courseName %>
+            <h2 class="text-5xl font-semibold mb-4 ">
+                Course:<%= courseName %>
             </h2>
+            <p>
+                <%= courseDescription %>
+            </p>
+            <div class="mt-5 p-10   ">
+                <ul>
+                    <% for( var i=0; i < chapters.length; i++) { %>
+                        <a href="/chapter/<%= chapters[i].id %>">
+                            <li class="mb-2 text-xl">Chapter <%= i+1 %> : <%= chapters[i].name %>
+                            </li>
+                        </a>
+                        <% } %>
+                </ul>
+            </div>
 
-            <!-- List of Chapters -->
-            <%- include('chapterlist',{courseName:courseName,chapters:chapters}) %>
         </div>
 
         <!-- Right Side: Add New Chapter and Add New Page -->
         <div class="w-1/2 pl-8">
             <div class="mb-4">
                 <h3 class="text-xl font-semibold mb-2">Add New Chapter</h3>
-                <form action='/chapter/<%= courseId %>' method="post">
+                <form action='/chapter/' method="post">
                     <div class="flex items-center">
-
+                        <input type="hidden" name="courseId" value=<%=courseId %>>
                         <input type="text" placeholder="Chapter Name" name="chapterName"
                             class="flex-grow border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:border-blue-500">
                         <input type="submit"
@@ -42,21 +53,6 @@
                             value="+Add">
 
                     </div>
-                </form>
-            </div>
-
-            <div>
-                <h3 class="text-xl font-semibold mb-2">Add New Page</h3>
-                <form action='/page/<%= courseId %>' method="post">
-                    <input type="text" placeholder="Chapter Name" name="chapterName"
-                        class="flex-grow border-gray-300 rounded-l-md px-3 py-2 mb-2 focus:outline-none focus:border-blue-500">
-                    <div class="flex  items-center ">
-                        <input type="text" placeholder="Page Name" name="pageName"
-                            class="flex-grow border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:border-blue-500">
-                    </div>
-                    <input type="submit"
-                        class="bg-blue-500 text-white rounded-r-md px-4 mt-4 py-2 w-fit hover:bg-blue-600 transition duration-300"
-                        value="+Add page">
                 </form>
             </div>
         </div>

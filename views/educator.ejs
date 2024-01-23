@@ -31,7 +31,8 @@
                     <p class="font-semibold text-gray-800">
                         <%=name %>
                     </p>
-                    <p class="text-gray-600">Educator ID: ABC123</p>
+                    <p class="text-gray-600">Educator ID: <%= id %>
+                    </p>
                 </div>
             </div>
 
@@ -69,8 +70,30 @@
                     </form>
                 </div>
             </div>
-            <!--Display already created courses-->
-            <%- include('ecourses.ejs', {name:name,courses:courses}) %>
+            <div class="container mx-auto p-8">
+                <h2 class="text-2xl font-semibold mb-8">Created Courses</h2>
+                <div class="grid grid-cols-1 gap-4"> <!-- Use grid for vertical alignment with a gap of 4 units -->
+                    <% for( var i=0; i < createdCourses.length; i++) { %>
+                        <div class="bg-white p-4 rounded-md">
+                            <h3 class="text-lg font-semibold mb-2">
+                                <%= i %> : <%= createdCourses[i].name %>
+                            </h3>
+                            <p>
+                                <%= createdCourses[i].description %>
+                            </p>
+                            <div class="justify-between mt-4"> <!-- Add margin-top for spacing -->
+                                <!-- Enroll Box -->
+                                <div
+                                    class="w-40 h-15 bg-blue-500 text-white rounded-md px-2 py-3 cursor-pointer hover:bg-blue-600 transition duration-300">
+                                    <h3 class="text-sm font-semibold mb-2">
+                                        <a href="/course/<%= createdCourses[i].id %>">Edit Course</a>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                </div>
+            </div>
         </div>
         <%- include('footer.ejs') %>
 </body>
