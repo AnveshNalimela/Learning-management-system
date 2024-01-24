@@ -23,7 +23,7 @@
             <h2 class="text-5xl text-blue-600 font-semibold mb-4 ">
                 Course :<%= course.name %>
             </h2>
-            <p class="text-3xl font-mono">
+            <p class="text-xl ">
                 <%= course.description %>
             </p>
             <div class="mt-5 p-10   ">
@@ -38,6 +38,20 @@
             </div>
 
         </div>
+        <div class="bg-blue-200 ml-10 p-8 rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold mb-4">Completion Status</h2>
+            <!-- Circle Container -->
+            <div class="relative inline-block w-20 h-20">
+                <div class="absolute inset-0 rounded-full bg-green-100 border-4 border-green-500">
+                    <div class="flex items-center justify-center h-full ">
+                        <span class="text-gary-400 font-bold text-2xl">
+                            <%=percentage %>%
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
 
     </div>

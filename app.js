@@ -1,13 +1,14 @@
 const express = require('express');
 const app = express();
 const path = require("path");
-const { User, Course, Chapter, Page, Enrollment } = require("./models");
+const { User, Course, Chapter, Page, Enrollment, Completed } = require("./models");
 const bodyParser = require("body-parser");
 const passport = require('passport');
 const connectEnsureLogin = require('connect-ensure-login');
 const session = require('express-session');
 const LocalStrategy = require('passport-local');
 const bcrypt = require('bcryptjs');
+const { constants } = require('fs/promises');
 const saltRounds = 10;
 
 
@@ -310,9 +311,27 @@ app.post('/enrollCourse/:courseId', connectEnsureLogin.ensureLoggedIn(), async (
 app.get('/scourse/:courseId', connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
     const chapters = await Chapter.findAll({ where: { courseId: request.params.courseId } })
     const course = await Course.findByPk(request.params.courseId);
+    const completedPages = await Completed.findAll({ where: { userId: request.user.id, courseId: request.params.courseId } })
+    const CompletedpagesCnt = completedPages.length;
+    const findNumberOfPages = async (chapter) => {
+        const pages = await Page.findAll({ where: { chapterId: chapter.id } });
+        return pages.length;
+    };
+    // Use Promise.all to asynchronously get the number of pages for each chapter
+    const chaptersWithPageCountPromises = chapters.map(async (chapter) => {
+        const pageCount = await findNumberOfPages(chapter);
+        return { pageCount };
+    });
+    // Wait for all promises to resolve
+    const chaptersWithPageCount = await Promise.all(chaptersWithPageCountPromises);
+    const totalPageCount = chaptersWithPageCount.reduce((sum, chapter) => sum + chapter.pageCount, 0);
+    console.log(totalPageCount)
+    const percentage = (CompletedpagesCnt / totalPageCount) * 100
+
     response.render('scourse.ejs', {
         course: course,
         chapters: chapters,
+        percentage: percentage.toFixed(1),
     })
 })
 
@@ -320,13 +339,37 @@ app.get('/schapter/:chapterId', connectEnsureLogin.ensureLoggedIn(), async (requ
     const pages = await Page.findAll({ where: { chapterId: request.params.chapterId } })
     const chapter = await Chapter.findByPk(request.params.chapterId);
     const course = await Course.findByPk(chapter.courseId)
+    const completedPages = await Completed.findAll({ where: { userId: request.user.id, courseId: course.id, chapterId: chapter.id } })
     response.render('schapter.ejs', {
         course: course,
         chapter: chapter,
-        pages: pages
+        pages: pages,
+        completedPages: completedPages
     })
 })
+//================Routes-related-to-completion-of-page================
+app.post("/completePage/:pageId", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
+    const page = await Page.findByPk(request.params.pageId)
+    const chapter = await Chapter.findByPk(page.chapterId)
+    const course = await Course.findByPk(chapter.courseId)
+    const enrollment = await Enrollment.findOne({ where: { userId: request.user.id, courseId: course.id } })
+    const completePage = await Completed.create({
+        userId: request.user.id,
+        courseId: course.id,
+        chapterId: chapter.id,
+        pageId: page.id,
+        enrollmentId: enrollment.id,
+        pageName: page.name,
+        chapterName: chapter.name,
+        courseName: course.name,
+    })
+    console.log("Page marked as Compelted")
+    response.redirect(`/schapter/${chapter.id}`)
+})
 
+
+
+//========================View Report===============================
 //Routing--related-to-view-report-to-educator
 app.get('/courseEnrollments/:courseId', connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
     try {
@@ -350,36 +393,7 @@ app.get('/courseEnrollments/:courseId', connectEnsureLogin.ensureLoggedIn(), asy
 });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//!--route--for--the--signout--from-the application
+//======================Sign Out===================
 app.get("/signout", (request, response, next) => {
     request.logout((err) => {
         if (err) { return next(err); }

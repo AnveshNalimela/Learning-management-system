@@ -16,25 +16,45 @@
         Go to Course Index
     </a>
 
-
-    <div class="container mx-auto p-8 flex items-center">
-        <!-- Left Side: Course Details -->
-
-        <div class=" pr-8">
+    <div class="flex items-center  m-10 p-10">
+        <div class="w-1/2 bg-blue-100 pl-8">
             <h2 class="text-5xl  text-color-blue font-semibold mb-4">
                 <%= chapter.name %>
             </h2>
             <h3 class="text-2xl mt-2">List of pages..!</h3>
-            <div class="mt-2 p-10   ">
+            <div class="mt-2 p-10">
                 <ul>
                     <% for( var i=0; i < pages.length; i++) { %>
                         <li class="mb-2 text-xl">Page <%= i+1 %> : <%= pages[i].name %>
                         </li>
+                        <form action="/completePage/<%= pages[i].id %>" method="post"><button
+                                class="mt-2 bg-blue-400 text-white px-4 py-2 mb-4 rounded">Mark as Complete</button>
+                        </form>
                         <% } %>
                 </ul>
+
             </div>
         </div>
+        <div class="w-1/2 bg-blue-100 pr-8">
+
+            <h3 class="text-2xl font-semibold  mt-10 mb-4">Completed Pages</h3>
+            <ul>
+                <% for (var i=0; i < completedPages.length; i++) { %>
+                    <li class="mb-2 flex items-center">
+                        <div class="w-30 h-10 rounded px-4 py-2 bg-green-100 border-2 border-green-300 mr-3">
+                            Completed
+                        </div>
+                        <span class="text-xl">
+                            <%= completedPages[i].pageName %>
+                        </span>
+                    </li>
+                    <% } %>
+            </ul>
+
+        </div>
     </div>
+
+
 
 
 </body>
