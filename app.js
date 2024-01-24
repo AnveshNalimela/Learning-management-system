@@ -398,7 +398,7 @@ app.get("/signout", (request, response, next) => {
     request.logout((err) => {
         if (err) { return next(err); }
         console.log("Sign out Successfully")
-        response.redirect("/");
+        response.render('signOut.ejs');
     });
 });
 module.exports = app;

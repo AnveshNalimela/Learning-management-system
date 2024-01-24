@@ -16,47 +16,47 @@
         !--Go to Dashboard </a>
 
 
-            <div class="container mx-auto p-8 flex">
-                <!-- Left Side: Course Details -->
-                <div class="w-1/2 pr-8">
-                    <h2 class="text-5xl font-semibold mb-4 ">
-                        Course:<%= courseName %>
-                    </h2>
-                    <p>
-                        <%= courseDescription %>
-                    </p>
-                    <div class="mt-5 p-10   ">
-                        <ul>
-                            <% for( var i=0; i < chapters.length; i++) { %>
-                                <a href="/chapter/<%= chapters[i].id %>">
-                                    <li class="mb-2 text-xl">Chapter <%= i+1 %> : <%= chapters[i].name %>
-                                    </li>
-                                </a>
-                                <% } %>
-                        </ul>
-                    </div>
-
-                </div>
-
-                <!-- Right Side: Add New Chapter and Add New Page -->
-                <div class="w-1/2 pl-8">
-                    <div class="mb-4">
-                        <h3 class="text-xl font-semibold mb-2">Add New Chapter</h3>
-                        <form action='/chapter/' method="post">
-                            <div class="flex items-center">
-                                <input type="hidden" name="courseId" value=<%=courseId %>>
-                                <input type="text" placeholder="Chapter Name" name="chapterName"
-                                    class="flex-grow border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:border-blue-500">
-                                <input type="submit"
-                                    class="bg-blue-500 text-white rounded-r-md px-4 py-2 hover:bg-blue-600 transition duration-300"
-                                    value="+Add">
-
-                            </div>
-                        </form>
-                    </div>
-                </div>
+    <div class="container mx-auto p-8 flex">
+        <!-- Left Side: Course Details -->
+        <div class="w-1/2 pr-8">
+            <h2 class="text-5xl font-semibold mb-4 ">
+                Course : <%= courseName %>
+            </h2>
+            <p>
+                <%= courseDescription %>
+            </p>
+            <div class="mt-5 p-10   ">
+                <ul>
+                    <% for( var i=0; i < chapters.length; i++) { %>
+                        <a href="/chapter/<%= chapters[i].id %>">
+                            <li class="mb-2 text-xl">Chapter <%= i+1 %> : <%= chapters[i].name %>
+                            </li>
+                        </a>
+                        <% } %>
+                </ul>
             </div>
+
+        </div>
+
+        <!-- Right Side: Add New Chapter and Add New Page -->
+        <div class="w-1/2 pl-8">
+            <div class="mb-4">
+                <h3 class="text-xl font-semibold mb-2">Add New Chapter</h3>
+                <form action='/chapter/' method="post">
+                    <div class="flex items-center">
+                        <input type="hidden" name="courseId" value=<%=courseId %>>
+                        <input type="text" placeholder="Chapter Name" name="chapterName"
+                            class="flex-grow border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:border-blue-500">
+                        <input type="submit"
+                            class="bg-blue-500 text-white rounded-r-md px-4 py-2 hover:bg-blue-600 transition duration-300"
+                            value="+Add">
+
+                    </div>
+                </form>
             </div>
+        </div>
+    </div>
+    </div>
 
 </body>
 
