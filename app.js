@@ -141,15 +141,15 @@ app.get("/Educator", connectEnsureLogin.ensureLoggedIn(), async (request, respon
 
 
 // Routing--realted--password-change
-app.get('/password-change', connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
+app.get('/password', connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
     try {
-        response.render("password-change.ejs")
+        response.render("password.ejs")
     } catch (error) {
         console.log('Error in rendering password-change page')
     }
 })
 
-app.post("/password-change", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
+app.post("/password", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
     try {
         if (request.body.newPassword === request.body.confirmPassword) {
             const hashedPwd = await bcrypt.hash(request.body.newPassword, saltRounds);
@@ -157,20 +157,24 @@ app.post("/password-change", connectEnsureLogin.ensureLoggedIn(), async (request
 
             if (updatedUser) {
                 console.log("Password updated successfully");
-                response.redirect("/");
+                response.redirect("/pwdSucces");
             } else {
                 console.log("Failed to update password");
                 response.redirect("/password-change");
             }
         } else {
             console.log("New password and confirm password do not match");
-            response.redirect("/password-change");
+            response.redirect("/password");
         }
     } catch (error) {
         console.error("Error updating password:", error);
-        response.redirect("/password-change");
+        response.redirect("/password");
     }
 });
+// Success pages
+app.get("/pwdSucces", async (request, response) => {
+    await response.render('pwdSucces.ejs')
+})
 
 
 //Route-for-creating-course
@@ -322,6 +326,30 @@ app.get('/schapter/:chapterId', connectEnsureLogin.ensureLoggedIn(), async (requ
         pages: pages
     })
 })
+
+//Routing--related-to-view-report-to-educator
+app.get('/courseEnrollments/:courseId', connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
+    try {
+        const enrollments = await Enrollment.findAll({ where: { courseId: request.params.courseId } })
+        const enrollmentUserIds = enrollments.map((enrollment) => enrollment.userId)
+        const enrollmentCnt = enrollments.length;
+        const createdBy = request.user.name;
+        const course = await Course.findByPk(request.params.courseId)
+        const enrolledstudents = await User.findAll({ where: { id: enrollmentUserIds } })
+        await response.render('courseEnrollments.ejs', {
+            course: course,
+            enrolledstudents: enrolledstudents,
+            createdBy: createdBy,
+            enrollmentCnt: enrollmentCnt,
+            enrollments: enrollments,
+        })
+    } catch (error) {
+        console.log(error)
+    }
+
+});
+
+
 
 
 

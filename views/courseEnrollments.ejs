@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= course.name %> Enrollment--Details
+    </title>
+    <!-- Include Tailwind CSS styles -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-blue-100">
+    <a href="/educator"
+        class="block bg-blue-500 text-white rounded-md py-2 px-4 hover:bg-blue-600 transition duration-300">
+        !--Go to Dashboard
+    </a>
+    <div class="container mx-auto my-8 p-8 max-w-1/2 bg-white rounded-lg ">
+        <div>
+            <h1 class="text-5xl  text-blue-600 font-semibold mb-4">
+                <%= course.name %>
+            </h1>
+            <p class="mb-4 text-xl"><strong>Description:</strong>
+                <%= course.description %>
+            </p>
+            <p class="mb-4 text-xl"><strong>Created By:</strong>
+                <%= createdBy %>
+            </p>
+            <p class="mb-4 text-xl"><strong>Number of Enrollments:</strong>
+                <%= enrollmentCnt %>
+            </p>
+        </div>
+        <div>
+            <h2 class="text-xl font-semibold mb-2">Enrollments:</h2>
+            <table class="w-fit border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-200 p-5 ">
+                        <th class="p-2">S.no</th>
+                        <th class="p-2">Name of student</th>
+                        <th class="p-2">Email</th>
+                        <th class="p-2">Date of Enrollment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for( var i=0; i < enrolledstudents.length; i++) { %>
+                        <tr class="<%= i % 2 === 0 ? 'bg-gray-100' : 'bg-white' %>">
+                            <td class="p-2">
+                                <%= i + 1 %>
+                            </td>
+                            <td class="p-2">
+                                <%= enrolledstudents[i].name %>
+                            </td>
+                            <td class="p-2">
+                                <%= enrolledstudents[i].email %>
+                            </td>
+                            <td class="p-2">
+                                <%= enrollments[i].createdAt.toDateString() %>
+                            </td>
+                        </tr>
+                        <% } %>
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
