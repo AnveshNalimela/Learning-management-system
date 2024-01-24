@@ -1,5 +1,5 @@
 // __tests__/app.test.js
-const { sequelize } = require('../models'); 
+const { sequelize } = require('../models');
 const request = require('supertest');
 const app = require('../app'); // Adjust the path based on your project structure
 const { User, Educator, Student, Enrollments, Course, Chapter, Page } = require('../models');
@@ -75,7 +75,7 @@ describe('Test LMS Application', () => {
                     confirmPassword: 'newpassword123',
                 });
 
-            expect(response.statusCode).toBe(302); // Redirect after successful password change
+            expect(response.statusCode).toBe(302);
 
             // Log in with the new password
             const loginResponse = await agent.post('/session').send({
@@ -83,9 +83,41 @@ describe('Test LMS Application', () => {
                 password: 'newpassword123',
             });
 
-            expect(loginResponse.statusCode).toBe(302); // Redirect after successful login with the new password
+            expect(loginResponse.statusCode).toBe(302);
+        });
+    });
+    describe('Educator features Test Suite', () => {
+        test('should allow educator to create course', async () => {
+            const response = await request(app)
+                .post('/course')
+                .send({
+                    courseName: 'Test Course',
+                    courseDescription: 'Test Course Description',
+                })
+
+            expect(response.statusCode).toBe(302); // Redirect after successful login
+        });
+        test('should allow educator to create chapter', async () => {
+            const response = await request(app)
+                .post('/chapter')
+                .send({
+                    chapterName: 'Test Chapter',
+
+                })
+
+            expect(response.statusCode).toBe(302); // Redirect after successful login
+        });
+        test('should allow educator to create Page', async () => {
+            const response = await request(app)
+                .post('/page')
+                .send({
+                    pageName: 'Test Page',
+
+                })
+
+            expect(response.statusCode).toBe(302); // Redirect after successful login
         });
     });
 
-    // Add similar tests for other functionalities (setCompleted, enroll, etc.)
+
 });
