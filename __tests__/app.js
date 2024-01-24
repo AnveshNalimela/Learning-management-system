@@ -18,13 +18,6 @@ describe('Test LMS Application', () => {
             role: 'student',
         });
 
-        await Educator.create({
-            name: 'Test Educator',
-            email: 'testedu@example.com',
-            password: hashedPwd,
-            role: 'educator',
-        });
-
         await Course.create({
             name: 'Test Course',
             description: 'Test Course Description',
@@ -35,7 +28,6 @@ describe('Test LMS Application', () => {
     afterAll(async () => {
         // Teardown: Cleanup the database after testing
         await User.destroy({ where: {} });
-        await Educator.destroy({ where: {} });
         await Course.destroy({ where: {} });
     });
 
@@ -77,7 +69,7 @@ describe('Test LMS Application', () => {
             });
 
             const response = await agent
-                .post('/password-change')
+                .post('/password ')
                 .send({
                     newPassword: 'newpassword123',
                     confirmPassword: 'newpassword123',

@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon -e js,ejs",
     "start:prod": "node index.js",
-    "test": "",
+    "pretest": "cross-env NODE_ENV=test npx sequelize-cli db:drop && cross-env NODE_ENV=test npx sequelize-cli db:create",
+    "test": "cross-env NODE_ENV=test jest --detectOpenHandles",
     "prepare": " husky install"
   },
   "author": "Anvesh Nalimela <nalimelaanvesh@gmail.com>",

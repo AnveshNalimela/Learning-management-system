@@ -7,8 +7,8 @@
     "dialect": "postgres"
   },
   "test": {
-    "username": "root",
-    "password": null,
+    "username": "postgres",
+    "password": "postgres",
     "database": "wd-lms-test",
     "host": "127.0.0.1",
     "dialect": "postgres"
