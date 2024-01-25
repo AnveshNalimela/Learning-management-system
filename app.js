@@ -64,7 +64,10 @@ passport.deserializeUser(async function (id, done) {
     }
 });
 
-
+app.use(function (request, response, next) {
+    response.locals.messages = request.flash();
+    next();
+});
 
 //route for the landing page which render index.ejs page
 app.get("/", async (request, response) => {

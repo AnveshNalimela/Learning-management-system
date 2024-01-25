@@ -4,7 +4,7 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Course extends Model {
-    
+
     static associate(models) {
       Course.hasMany(models.Chapter, {
         foreignKey: 'courseId'
@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Course.init({
     name: DataTypes.STRING,
-    description: DataTypes.STRING,
+    description: DataTypes.TEXT,
     created: DataTypes.INTEGER
   }, {
     sequelize,
