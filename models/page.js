@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Page.init({
-    name: DataTypes.STRING
+    name: DataTypes.STRING,
+    content: DataTypes.TEXT,
   }, {
     sequelize,
     modelName: 'Page',

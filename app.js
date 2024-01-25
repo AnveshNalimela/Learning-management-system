@@ -67,7 +67,9 @@ passport.deserializeUser(async function (id, done) {
 
 
 //route for the landing page which render index.ejs page
-app.get("/", async (request, response) => { response.render('index.ejs') })
+app.get("/", async (request, response) => {
+    response.render('index.ejs')
+})
 
 
 //route to signup page
@@ -244,11 +246,14 @@ app.get('/chapter/:chapterId', connectEnsureLogin.ensureLoggedIn(), async (reque
 
 // routing--related-to-creation-of-page
 app.post("/page", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
+
     try {
         const page = await Page.create({
             name: request.body.pageName,
             chapterId: request.body.chapterId,
+            content: request.body.pageContent,
         });
+
         console.log("New page added!");
         response.redirect(`/chapter/${request.body.chapterId}`);
     } catch (error) {
@@ -294,9 +299,17 @@ app.get('/viewCourse/:courseId', connectEnsureLogin.ensureLoggedIn(), async (req
 
 app.get('/enrollCourse/:courseId', connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
     const course = await Course.findByPk(request.params.courseId);
-    response.render('enrollCourse.ejs', {
-        course: course
-    })
+    const enrollmentStatus = await Enrollment.findOne({ where: { userId: request.user.id, courseId: course.id } })
+    if (enrollmentStatus) {
+        response.render('alreadyEnrolled.ejs', {
+            course: course
+        })
+
+    } else {
+        response.render('enrollCourse.ejs', {
+            course: course
+        })
+    }
 })
 
 app.post('/enrollCourse/:courseId', connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
@@ -326,7 +339,7 @@ app.get('/scourse/:courseId', connectEnsureLogin.ensureLoggedIn(), async (reques
     const chaptersWithPageCount = await Promise.all(chaptersWithPageCountPromises);
     const totalPageCount = chaptersWithPageCount.reduce((sum, chapter) => sum + chapter.pageCount, 0);
     console.log(totalPageCount)
-    const percentage = (CompletedpagesCnt / totalPageCount) * 100
+    const percentage = (CompletedpagesCnt / totalPageCount) * 100 || 0.0
 
     response.render('scourse.ejs', {
         course: course,
@@ -349,21 +362,28 @@ app.get('/schapter/:chapterId', connectEnsureLogin.ensureLoggedIn(), async (requ
 })
 //================Routes-related-to-completion-of-page================
 app.post("/completePage/:pageId", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
+
     const page = await Page.findByPk(request.params.pageId)
     const chapter = await Chapter.findByPk(page.chapterId)
     const course = await Course.findByPk(chapter.courseId)
     const enrollment = await Enrollment.findOne({ where: { userId: request.user.id, courseId: course.id } })
-    const completePage = await Completed.create({
-        userId: request.user.id,
-        courseId: course.id,
-        chapterId: chapter.id,
-        pageId: page.id,
-        enrollmentId: enrollment.id,
-        pageName: page.name,
-        chapterName: chapter.name,
-        courseName: course.name,
-    })
-    console.log("Page marked as Compelted")
+    const CompletedStatus = await Completed.findOne({ where: { userId: request.user.id, courseId: course.id, chapterId: chapter.id, pageId: page.id } })
+    if (CompletedStatus) {
+        console.log("Page already marked as Compelted")
+
+    } else {
+        const completePage = await Completed.create({
+            userId: request.user.id,
+            courseId: course.id,
+            chapterId: chapter.id,
+            pageId: page.id,
+            enrollmentId: enrollment.id,
+            pageName: page.name,
+            chapterName: chapter.name,
+            courseName: course.name,
+        })
+        console.log("Page marked as Compelted")
+    }
     response.redirect(`/schapter/${chapter.id}`)
 })
 

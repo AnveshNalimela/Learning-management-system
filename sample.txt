@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tailwind CSS Popup</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<button id="myButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+    Click me
+</button>
+
+<div id="popup" class="fixed inset-0 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg p-6 shadow-xl z-50" role="dialog" aria-modal="true">
+        <div class="flex justify-end">
+            <button id="close-popup" class="text-gray-400 hover:text-gray-600 focus:outline-none">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <div class="mt-4 text-center">
+            <p class="text-lg font-medium text-gray-800">Invalid email or password. Please try again.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("myButton").addEventListener("click", function () {
+        document.getElementById("popup").classList.remove("hidden");
+    });
+
+    document.getElementById("close-popup").addEventListener("click", function () {
+        document.getElementById("popup").classList.add("hidden");
+    });
+
+    window.addEventListener("click", function (event) {
+        if (event.target == document.getElementById("popup")) {
+            document.getElementById("popup").classList.add("hidden");
+        }
+    });
+</script>
+
+</body>
+
+</html>
