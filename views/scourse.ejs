@@ -11,46 +11,65 @@
 </head>
 
 <body class="bg-blue-100">
-    <a href="/student"
-        class="block bg-blue-500 text-white rounded-md py-2 px-4 hover:bg-blue-600 transition duration-300">
-        Go to Dashboard
-    </a>
-
-
-    <div class="container mx-auto p-8 flex items-center ">
-        <!-- Left Side: Course Details -->
-        <div class=" pr-8">
-            <h2 class="text-5xl text-blue-600 font-semibold mb-4 ">
-                Course :<%= course.name %>
-            </h2>
-            <p class="text-xl ">
-                <%= course.description %>
-            </p>
-            <div class="mt-5 p-10   ">
-                <ul>
-                    <% for( var i=0; i < chapters.length; i++) { %>
-                        <a href="/schapter/<%= chapters[i].id %>">
-                            <li class="mb-2 text-2xl font-sans">Chapter <%= i+1 %> : <%= chapters[i].name %>
-                            </li>
-                        </a>
-                        <% } %>
-                </ul>
+    <nav class="flex items-center justify-between bg-white p-2 shadow-md">
+        <a href="/student" class="flex items-center mx-3 my-2">
+            <img src="https://cdn-icons-png.flaticon.com/512/7518/7518214.png" class="w-6 h-6" alt="view course">
+            <div class="ml-2 text-blue-500 hover:text-blue-600 transition duration-300">
+                Go to Dashboard
             </div>
+        </a>
 
-        </div>
-        <div class="bg-blue-200 ml-10 p-8 rounded-lg shadow-md">
-            <h2 class="text-2xl font-semibold mb-4">Completion Status</h2>
-            <!-- Circle Container -->
-            <div class="relative inline-block w-20 h-20">
-                <div class="w-23 h-23 absolute inset-0 rounded-full bg-green-100 border-4 border-green-500">
-                    <div class="flex items-center justify-center h-full ">
-                        <span class="text-gary-400 font-bold text-xl">
-                            <%=percentage %>%
-                        </span>
-                    </div>
+        <div class="flex items-center mx-3">
+            <div class=" bg-blue-500 rounded-md p-2 flex items-center">
+                <h2 class="text-xl text-white font-semibold mr-2">Completion Status</h2>
+                <!-- Square Container -->
+                <div
+                    class="w-18 h-10 bg-green-200 rounded-md border-2 border-green-500 flex items-center justify-center">
+                    <span class="font-semibold text-gary-300 text-sm">
+                        <%= percentage %>%
+                    </span>
                 </div>
             </div>
         </div>
+    </nav>
+
+
+
+    <div class="container mx-auto p-8 flex items-center ">
+        <div class="w-1/2 mx-auto">
+
+            <!-- Course Details Container -->
+            <div class="bg-white p-6 rounded-md text-center">
+
+                <!-- Course Name -->
+                <h2 class="text-3xl font-bold mb-2"> Course :<%= course.name %>
+                </h2>
+
+                <!-- Description -->
+                <p class="text-gray-700 mb-4">
+                    <%= course.description %>
+                </p>
+
+                <!-- List of Chapters -->
+                <div class="space-y-4">
+                    <% for( var i=0; i < chapters.length; i++) { %>
+                        <!-- Chapter 1 -->
+                        <div class="flex items-center justify-between border-b border-gray-400 p-4">
+                            <span class="text-lg font-semibold">Chapter <%= i+1 %> : <%= chapters[i].name %></span>
+                            <a href="/schapter/<%= chapters[i].id %>"><button
+                                    class="border border-gray-400 px-4 py-2 rounded">View Chapter</button></a>
+                        </div>
+                        <% } %>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+
 
 
 

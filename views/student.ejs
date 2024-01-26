@@ -11,21 +11,9 @@
 
 <body class="bg-blue-100">
     <%- include('header.ejs') %>
-
-        <a href="/signout"
-            class="inline-block px-4 py-2 mt-4 bg-blue-500 text-white rounded transition duration-300 hover:bg-blue-600">
-            Sign Out
-        </a>
-        <a href="/password"
-            class="bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600 transition duration-300">
-            Change Password
-        </a>
-
-        <!-- Student Homepage Container -->
-        <div class="container mx-auto p-8">
-
-            <!-- Student Icon and Details -->
-            <div class="flex justify-end items-center mb-4">
+        <nav>
+            <h1 class="text-2xl font-semibold ml-10 px-5 mt-6 ">Welcome, <%= studentName %>!</h1>
+            <div class="flex justify-end items-center mr-10">
                 <img src="https://cdn-icons-png.flaticon.com/512/9257/9257174.png" alt="Student Icon"
                     class="w-8 h-8  rounded mr-2">
                 <div>
@@ -37,70 +25,88 @@
                 </div>
             </div>
 
-            <!-- Welcome Message -->
-            <h1 class="text-3xl font-semibold mb-6">Welcome, <%= studentName %>!</h1>
+
+        </nav>
+
+
+
+        <!-- Student Homepage Container -->
+        <div class="container mx-auto p-8">
+
             <!-- Enrolled Courses Container -->
             <div class="mb-8">
                 <h2 class="text-xl font-semibold mb-4">Enrolled Courses</h2>
+
+
                 <% for( var i=0; i < enrolledCourses.length; i++) { %>
                     <!-- List of Enrolled Courses -->
-                    <div class="">
-                        <div class="bg-white p-4 m-8 rounded-md w-1/3">
-                            <h3 class="text-lg font-semibold mb-2">
-                                <%= i+1 %> : <%= enrolledCourses[i].name %>
-                            </h3>
-                            <p>
-                                <%= enrolledCourses[i].description %>
-                            </p>
-                            <div
-                                class="w-40 h-12 bg-blue-400 text-white rounded-md px-2 py-3 m-5 cursor-pointer hover:bg-blue-600 transition duration-300">
-                                <a href="/scourse/<%=enrolledCourses[i].id%>" class="block text-center">
-                                    <h3 class="text-sm font-semibold mb-2">Start Course</h3>
-                                </a>
 
-                            </div>
+                    <div class="bg-white p-4 m-4 border-blue-400 rounded-md w-4/5">
+                        <h3 class="text-lg font-semibold mb-2">
+                            <%= i+1 %> : <%= enrolledCourses[i].name %>
+                        </h3>
 
+                        <div class="flex items-center justify-middle">
+                            <a href="/scourse/<%=enrolledCourses[i].id%>" class="block text-center">
+                                <div
+                                    class="w-36 h-12 bg-blue-500 text-white rounded-md  m-3 cursor-pointer hover:bg-blue-600 transition duration-300">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/5261/5261565.png"
+                                        class=" w-35 h-12 mx-10 my-1 flex items-center justify-middle"
+                                        alt="Start course">
+                                </div>
+                            </a>
                         </div>
-                        <% } %>
                     </div>
+                    <% } %>
 
 
 
-                    <!-- Available Courses Container -->
-                    <div>
-                        <h2 class="text-xl font-semibold mb-4">Available Courses</h2>
-                        <!-- List of Available Courses -->
-                        <% for( var i=0; i < availcourses.length; i++) { %>
-                            <div class="">
-                                <div class="bg-white p-4 m-8 rounded-md w-1/3">
+                        <!-- Available Courses Container -->
+                        <div>
+                            <h2 class="text-xl font-semibold mb-4">Available Courses</h2>
+                            <!-- List of Available Courses -->
+                            <% for( var i=0; i < availcourses.length; i++) { %>
+
+                                <div class="bg-white p-4 m-8 rounded-md w-3/4">
                                     <h3 class="text-lg font-semibold mb-2">
                                         <%= availcourses[i].name%>
                                     </h3>
                                     <p>
                                         <%= availcourses[i].description %>
                                     </p>
-                                    <div class="flex justify-between">
+                                    <div class="flex items-center justify-content mx-20">
                                         <!-- Enroll Box -->
-                                        <div
-                                            class="w-40 h-12 bg-blue-400 text-white rounded-md px-2 py-3 m-5 cursor-pointer hover:bg-blue-600 transition duration-300">
-                                            <a href="/enrollCourse/<%=availcourses[i].id %>" class="block text-center">
+                                        <a href="/enrollCourse/<%=availcourses[i].id %>" class="block text-center">
+                                            <div
+                                                class="w-40 h-20 flex items-center  bg-blue-500 text-white rounded-md px-2 py-3 m-3 cursor-pointer hover:bg-blue-600 transition duration-300">
+                                                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135763.png"
+                                                    class=" w-35 h-12 mx-4 my-1 flex items-center justify-middle"
+                                                    alt="enroll course">
                                                 <h3 class="text-sm font-semibold mb-2">Enroll Course</h3>
-                                            </a>
-                                        </div>
+
+                                            </div>
+                                        </a>
                                         <!-- View Box -->
-                                        <div
-                                            class="w-40 h-12 bg-blue-400 text-white rounded-md px-2 py-3 m-5 cursor-pointer hover:bg-blue-400 transition duration-300">
-                                            <a href="/viewCourse/<%=availcourses[i].id %>" class="block text-center">
+
+                                        <a href="/viewCourse/<%=availcourses[i].id %>" class="block text-center">
+                                            <div
+                                                class="w-40 h-20 flex items-center  bg-blue-500 text-white rounded-md px-2 py-3 m-3 cursor-pointer hover:bg-blue-600 transition duration-300">
+                                                <img src="https://cdn-icons-png.flaticon.com/512/1162/1162251.png"
+                                                    class=" w-35 h-12 mx-4 my-1 flex items-center justify-middle"
+                                                    alt="view course">
                                                 <h3 class="text-sm font-semibold mb-2">View Course</h3>
-                                            </a>
-                                        </div>
+
+                                            </div>
+
+                                        </a>
+
                                     </div>
 
+
                                 </div>
-                            </div>
-                            <% } %>
-                    </div>
-                    <%- include('footer.ejs') %>
+                                <% } %>
+                        </div>
+                        <%- include('footer.ejs') %>
 </body>
 
 </html>

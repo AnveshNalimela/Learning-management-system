@@ -68,11 +68,15 @@ app.use(function (request, response, next) {
     response.locals.messages = request.flash();
     next();
 });
+app.get("/", (request, response) => {
+    if (request.isAuthenticated()) {
+        return response.redirect("/page");
+    }
+    else {
+        return response.render("index.ejs");
+    }
+});
 
-//route for the landing page which render index.ejs page
-app.get("/", async (request, response) => {
-    response.render('index.ejs')
-})
 
 
 //route to signup page
@@ -396,18 +400,22 @@ app.post("/completePage/:pageId", connectEnsureLogin.ensureLoggedIn(), async (re
 //Routing--related-to-view-report-to-educator
 app.get('/courseEnrollments/:courseId', connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
     try {
+        const totalEnrollments = await Enrollment.findAll();
+        const totalEnrollmentsCnt = totalEnrollments.length;
         const enrollments = await Enrollment.findAll({ where: { courseId: request.params.courseId } })
         const enrollmentUserIds = enrollments.map((enrollment) => enrollment.userId)
         const enrollmentCnt = enrollments.length;
         const createdBy = request.user.name;
         const course = await Course.findByPk(request.params.courseId)
         const enrolledstudents = await User.findAll({ where: { id: enrollmentUserIds } })
+        const percentage = (enrollmentCnt / totalEnrollmentsCnt) * 100 || 0
         await response.render('courseEnrollments.ejs', {
             course: course,
             enrolledstudents: enrolledstudents,
             createdBy: createdBy,
             enrollmentCnt: enrollmentCnt,
             enrollments: enrollments,
+            percentage: percentage.toFixed(1),
         })
     } catch (error) {
         console.log(error)
