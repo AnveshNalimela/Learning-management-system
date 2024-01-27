@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Content Example</title>
+</head>
+
+<body>
+
+    <!-- Dynamic Content Div -->
+    <div id="dynamicContentDiv" class="my-4 p-3 border rounded">
+        <!-- Content will be dynamically updated here -->
+    </div>
+
+    <script>
+        // Function to check the condition and return content
+        function getContentBasedOnCondition() {
+            // Replace this condition with your actual logic
+            var isConditionMet = false;
+
+            // Return content based on the condition
+            if (isConditionMet) {
+                return "Condition is met! This content is displayed.";
+            } else {
+                return "Condition is not met! This content is displayed.";
+            }
+        }
+
+        // Update the content of the dynamic div based on the function
+        function updateDynamicContent() {
+            var dynamicContentDiv = document.getElementById('dynamicContentDiv');
+            dynamicContentDiv.textContent = getContentBasedOnCondition();
+        }
+
+        // Call the function initially and whenever needed
+        updateDynamicContent();
+    </script>
+
+</body>
+
+</html>

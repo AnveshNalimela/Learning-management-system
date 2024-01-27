@@ -10,6 +10,7 @@ const LocalStrategy = require('passport-local');
 const bcrypt = require('bcryptjs');
 const { constants } = require('fs/promises');
 const saltRounds = 10;
+const flash = require('connect-flash');
 
 
 
@@ -22,9 +23,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({ secret: "my-super-key 1234567890", cookie: { maxAge: 24 * 60 * 60 * 1000 } }));
 app.use(passport.initialize());
 app.use(passport.session())
-app.use(require('connect-flash')());
+
 app.use(passport.initialize());
 app.use(passport.session())
+app.use(require('express-session')({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: true
+}));
+
+app.use(flash());
+
 
 passport.use(new LocalStrategy({
     usernameField: "email",
@@ -364,8 +373,10 @@ app.get('/schapter/:chapterId', connectEnsureLogin.ensureLoggedIn(), async (requ
         course: course,
         chapter: chapter,
         pages: pages,
-        completedPages: completedPages
+        completedPages: completedPages,
+
     })
+
 })
 //================Routes-related-to-completion-of-page================
 app.post("/completePage/:pageId", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
@@ -376,7 +387,9 @@ app.post("/completePage/:pageId", connectEnsureLogin.ensureLoggedIn(), async (re
     const enrollment = await Enrollment.findOne({ where: { userId: request.user.id, courseId: course.id } })
     const CompletedStatus = await Completed.findOne({ where: { userId: request.user.id, courseId: course.id, chapterId: chapter.id, pageId: page.id } })
     if (CompletedStatus) {
-        console.log("Page already marked as Compelted")
+        request.flash('info', 'Page already marked as Compeleted.');
+        console.log("Page already marked as Compeleted")
+
 
     } else {
         const completePage = await Completed.create({
@@ -390,6 +403,8 @@ app.post("/completePage/:pageId", connectEnsureLogin.ensureLoggedIn(), async (re
             courseName: course.name,
         })
         console.log("Page marked as Compelted")
+        request.flash('info', 'Page  marked as Compeleted.');
+
     }
     response.redirect(`/schapter/${chapter.id}`)
 })
