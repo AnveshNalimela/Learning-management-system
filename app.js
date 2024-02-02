@@ -278,6 +278,28 @@ app.post("/page", connectEnsureLogin.ensureLoggedIn(), async (request, response)
         return response.status(422).json(error);
     }
 });
+app.get("/editPage/:pageId", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
+    try {
+        const page = await Page.findOne({ where: { id: request.params.pageId } });
+        await response.render("editPage.ejs", {
+            page: page
+        })
+    } catch (error) {
+        console.log("Error in getting the details of a particular page");
+    }
+})
+app.post("/savePageChanges", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
+    const { pageId, editedContent } = request.body;
+    try {
+        console.log('Received Page ID:', pageId);
+        await Page.update(
+            { content: editedContent },
+            { where: { id: pageId } })
+
+    } catch (error) {
+        console.log("Error in editing the page")
+    }
+})
 
 //==============================Student routes ==================================
 app.get("/Student", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {

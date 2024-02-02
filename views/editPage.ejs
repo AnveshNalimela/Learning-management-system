@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= page.name %>
+    </title>
+    <!-- Include Tailwind CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+
+
+</head>
+
+<body class="bg-blue-100 flex items-center justify-center h-screen">
+    <div class="bg-white p-8 rounded shadow-md w-96 text-center">
+        <!-- Page Name -->
+        <h1 class="text-2xl font-semibold mb-4">
+            <%= page.name %>
+        </h1>
+
+        <!-- Content -->
+        <div class="mb-8">
+            <div id="textEditor" class="p-5 border-4 bg-gray-100" contenteditable="true">
+                <%= page.content %>
+            </div>
+            <!-- Your content goes here -->
+
+        </div>
+
+        <!-- Save Changes Button -->
+        <button id="saveChangesBtn" onclick="saveChanges()"
+            class="bg-green-400 hover:bg-green-600 text-white px-4 py-2 rounded-full">Save
+            Changes</button>
+        <p id="saveStatus" class="text-green-500 font-semibold mt-2 hidden">Changes Saved!</p>
+
+        <a href="/chapter/<%= page.chapterId %>"><button
+                class="bg-blue-400 hover:bg-blue-600 text-white px-4 py-2 rounded-full mt-4">Go
+                Back</button></a>
+
+    </div>
+    <script>
+        function saveChanges() {
+            try {
+                document.getElementById('saveChangesBtn').innerText = 'Saved';
+                document.getElementById('saveChangesBtn').disabled = true;
+                document.getElementById('saveStatus').classList.remove('hidden');
+                // Get the edited content from the text editor
+                var editedContent = document.getElementById('textEditor').innerHTML;
+
+                // Assuming you have a variable 'pageId' containing the page ID
+                var pageId = '<%= page.id %>';
+
+                // Make a fetch request to send the data to the server
+                fetch('/savePageChanges', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        pageId: pageId,
+                        editedContent: editedContent,
+                    }),
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Data received from server:', data);
+                        // Handle any further actions after successful save
+
+                    })
+                    .catch(error => {
+                        console.error('There was a problem with the fetch operation:', error);
+                        // Handle errors
+                    });
+            } catch (error) {
+                console.error('An error occurred:', error);
+            }
+        }
+    </script>
+
+</body>
+
+</html>
