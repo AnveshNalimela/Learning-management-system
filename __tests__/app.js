@@ -117,7 +117,7 @@ describe('Test LMS Application', () => {
 
             expect(response.statusCode).toBe(302); // Redirect after successful login
         });
-    });
 
+    });
 
 });

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= page.name %>
+    </title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <script>
+        // Use JavaScript to hide the flash message after 100ms
+        document.addEventListener('DOMContentLoaded', function () {
+            var flashMessage = document.getElementById('flashMessage');
+            if (flashMessage) {
+                setTimeout(function () {
+                    flashMessage.style.display = 'none';
+                }, 1000);
+            }
+        });
+    </script>
+</head>
+
+<body class="bg-blue-100 flex items-center justify-center h-screen">
+
+    <div class="bg-white p-8 rounded shadow-md w-2/3 text-center">
+        <!-- Page Name -->
+        <h1 class="text-2xl font-semibold mb-4">
+            <a href="/scourse/<%=course.id%>" class="text-blue-500 font-bold text-3xl">
+                <%=course.name%>
+            </a> :<a href="/schapter/<%=chapter.id%> " class="text-green-500 text-2xl">
+                <%=chapter.name %>
+            </a> : <%= page.name %>
+        </h1>
+
+        <!-- Content -->
+        <div class="mb-8">
+            <div class="p-5 border-4 bg-gray-100">
+                <!-- Page content goes here -->
+                <%=page.content %>
+
+
+            </div>
+        </div>
+
+        <!-- Mark as Complete Button -->
+        <form action="/completePage/<%= page.id %>" method="post"><button
+                class="<%= CompletedStatus ? 'bg-green-500' : 'bg-blue-500' %> text-white px-4 py-2 rounded-full">
+                <%= CompletedStatus ? 'Completed' : 'Mark as Complete' %>
+            </button>
+        </form>
+
+        <% if (messages.info) { %>
+            <div id="flashMessage"
+                class="alert alert-info top-10 right-5 fixed text-sm bg-green-300 p-5 rounded text-white">
+                <%= messages.info %>
+            </div>
+            <% } %>
+
+    </div>
+
+</body>
+
+</html>

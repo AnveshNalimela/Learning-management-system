@@ -3,6 +3,7 @@ const app = express();
 const path = require("path");
 const { User, Course, Chapter, Page, Enrollment, Completed } = require("./models");
 const bodyParser = require("body-parser");
+
 const passport = require('passport');
 const connectEnsureLogin = require('connect-ensure-login');
 const session = require('express-session');
@@ -11,7 +12,6 @@ const bcrypt = require('bcryptjs');
 const { constants } = require('fs/promises');
 const saltRounds = 10;
 const flash = require('connect-flash');
-
 
 
 
@@ -82,14 +82,20 @@ app.get("/", (request, response) => {
         return response.redirect("/page");
     }
     else {
-        return response.render("index.ejs");
+        return response.render("index.ejs", {
+        })
+
     }
 });
 
 
 
 //route to signup page
-app.get("/signup", async (request, response) => { response.render('signup.ejs') })
+app.get("/signup", async (request, response) => {
+    response.render('signup.ejs', {
+
+    })
+})
 
 
 //route for new user signup "user"
@@ -125,6 +131,7 @@ app.post("/user", async (request, response) => {
 app.get("/login", async (request, response) => {
     console.log("login failed")
     response.render('login.ejs', {
+
         message: request.flash('error')
     });
 });
@@ -400,6 +407,22 @@ app.get('/schapter/:chapterId', connectEnsureLogin.ensureLoggedIn(), async (requ
     })
 
 })
+app.get("/spage/:pageId", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
+
+    const page = await Page.findByPk(request.params.pageId)
+    const chapter = await Chapter.findByPk(page.chapterId)
+    const course = await Course.findByPk(chapter.courseId)
+    const enrollment = await Enrollment.findOne({ where: { userId: request.user.id, courseId: course.id } })
+    const CompletedStatus = await Completed.findOne({ where: { userId: request.user.id, courseId: course.id, chapterId: chapter.id, pageId: page.id } })
+    await response.render("spage.ejs", {
+        page: page,
+        chapter: chapter,
+        course: course,
+        CompletedStatus: CompletedStatus,
+    })
+
+
+})
 //================Routes-related-to-completion-of-page================
 app.post("/completePage/:pageId", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
 
@@ -411,6 +434,8 @@ app.post("/completePage/:pageId", connectEnsureLogin.ensureLoggedIn(), async (re
     if (CompletedStatus) {
         request.flash('info', 'Page already marked as Compeleted.');
         console.log("Page already marked as Compeleted")
+
+
 
 
     } else {
@@ -428,7 +453,7 @@ app.post("/completePage/:pageId", connectEnsureLogin.ensureLoggedIn(), async (re
         request.flash('info', 'Page  marked as Compeleted.');
 
     }
-    response.redirect(`/schapter/${chapter.id}`)
+    response.redirect(`/spage/${page.id}`)
 })
 
 
