@@ -491,7 +491,10 @@ app.get("/signout", (request, response, next) => {
     request.logout((err) => {
         if (err) { return next(err); }
         console.log("Sign out Successfully")
-        response.render('signOut.ejs');
+        response.redirect('/signOut-success');
     });
 });
+app.get("/signOut-success", async (request, response) => {
+    await response.render("signOut.ejs")
+})
 module.exports = app;

@@ -119,5 +119,62 @@ describe('Test LMS Application', () => {
         });
 
     });
+    describe('Student Features Test Suite', () => {
+        test('should student allow a user to sign up ', async () => {
+            const response = await request(app)
+                .post('/user')
+                .send({
+                    name: 'John Doe',
+                    email: 'john.doe@example.com',
+                    password: 'password123',
+                    role: 'student',
+                });
+
+            expect(response.statusCode).toBe(302); // Redirect after successful signup
+        });
+        test('should student allow enroll in a course', async () => {
+            const courseId = 'your-course-id';
+            const response = await request(app)
+                .post(`/enrollCourse/${courseId}`)
+
+            expect(response.statusCode).toBe(302); // Redirect after successful signup
+
+        });
+        test('should student allow  mark a page as completed ', async () => {
+            const pageId = 1;
+            const response = await request(app)
+                .post(`/completePage/${pageId}`)
+
+            expect(response.statusCode).toBe(302); 
+
+        });
+        test('User can signout of application ', async () => {
+
+            const response = await request(app)
+                .get('/signout')
+
+            expect(response.statusCode).toBe(302);
+
+        });
+    });
 
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
