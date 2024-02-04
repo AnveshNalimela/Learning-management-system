@@ -67,7 +67,7 @@
             <div class="grid grid-cols-1 gap-4"> <!-- Use grid for vertical alignment with a gap of 4 units -->
                 <% for( var i=0; i < createdCourses.length; i++) { %>
 
-                    <nav class="bg-white flex ml-10 mt-5 p-4 w-full rounded-md">
+                    <div class="bg-white flex ml-10 mt-5 p-4 w-full rounded-md">
                         <div class="inline-block">
                             <h3 class="text-lg font-semibold mb-2">
                                 <%= i+1 %> : <%= createdCourses[i].name %>
@@ -95,12 +95,12 @@
                                 </div>
                             </a>
                         </div>
-                    </nav>
-
+                    </div>
+                    <% } %>
             </div>
-            <% } %>
+
         </div>
-        </div>
+
 
         <%- include('footer.ejs') %>
 </body>
