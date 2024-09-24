@@ -24,8 +24,6 @@ app.use(session({ secret: "my-super-key 1234567890", cookie: { maxAge: 24 * 60 *
 app.use(passport.initialize());
 app.use(passport.session())
 
-app.use(passport.initialize());
-app.use(passport.session())
 app.use(require('express-session')({
     secret: 'your-secret-key',
     resave: false,
