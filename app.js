@@ -20,14 +20,18 @@ app.use(express.urlencoded({ extended: false }));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({ secret: "my-super-key 1234567890", cookie: { maxAge: 24 * 60 * 60 * 1000 } }));
+app.use(session({ secret: "my-super-key 1234567890",
+     resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 24 * 60 * 60 * 1000 } }));
 app.use(passport.initialize());
 app.use(passport.session())
 
 app.use(require('express-session')({
     secret: 'your-secret-key',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: { secure: false }
 }));
 
 app.use(flash());
